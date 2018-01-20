@@ -1,0 +1,5 @@
+<launch>
+    <node name="line_extractor" pkg="line_extractor_igvc" type="line_extractor" output="screen">
+        <!--<param name="character" value="?" />-->
+    </node>
+</launch>
