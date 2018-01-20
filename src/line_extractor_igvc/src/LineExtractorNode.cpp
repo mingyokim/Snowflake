@@ -22,7 +22,7 @@ LineExtractorNode::LineExtractorNode(int argc, char **argv, std::string node_nam
 }
 
 void LineExtractorNode::pclCallBack(sensor_msgs::PointCloud pointCloud) {
-    this->pointCloud = pointCloud;
+    this->points = new std::vector(pointCloud.points);
     extractLines();
     return;
 }
