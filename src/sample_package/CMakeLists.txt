@@ -117,8 +117,8 @@ catkin_package(
 # include_directories(include)
 include_directories(
     ${catkin_INCLUDE_DIRS}
-#    ${sb_utils_INCLUDE_DIRS}
-#    ./include
+    ${sb_utils_INCLUDE_DIRS}
+    ./include
 )
 
 ## Declare a C++ library
