@@ -2,5 +2,5 @@
 
 <launch>
     <node name="line_extractor_node" pkg="line_extractor_igvc" type="line_extractor_node" />
-    <test test-name="line_extractor_node_rostest" pkg="line_extractor_igvc" type="line_extractor_node_rostest" />
+    <test test-name="line_extracto_rostest" pkg="line_extractor_igvc" type="line_extractor_rostest" />
 </launch>

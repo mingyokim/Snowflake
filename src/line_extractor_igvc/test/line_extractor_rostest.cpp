@@ -59,7 +59,7 @@ TEST_F(LineExtractorRosTest, getAngularVel){
 
 int main(int argc, char **argv) {
     // !! Don't forget to initialize ROS, since this is a test within the ros framework !!
-    ros::init(argc, argv, "line_extractor_node_rostest");
+    ros::init(argc, argv, "line_extractor_rostest");
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
