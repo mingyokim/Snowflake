@@ -133,7 +133,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
- add_executable(${PROJECT_NAME}_node src/line_extractor.cpp src/LineExtractor.cpp include/LineExtractor.h)
+ add_executable(${PROJECT_NAME}_node src/line_extractor_node.cpp src/LineExtractorNode.cpp include/LineExtractorNode.h)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -198,7 +198,7 @@ include_directories(
 if (CATKIN_ENABLE_TESTING)
 
     # Adding gtests to the package
-    catkin_add_gtest(line-extractor-test test/line-extractor-test.cpp src/LineExtractor.cpp)
+    catkin_add_gtest(line-extractor-test test/line-extractor-node-test.cpp src/LineExtractorNode.cpp)
     target_link_libraries(line-extractor-test ${catkin_LIBRARIES})
 
     # Adding rostest to the package
