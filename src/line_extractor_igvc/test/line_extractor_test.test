@@ -1,6 +1,6 @@
 <!-- A .test file which launches the node and its corresponding rostest -->
 
 <launch>
-    <node name="line_extractor" pkg="line_extractor_igvc" type="line_extractor" />
-    <test test-name="line_extractor_rostest" pkg="line_extractor_igvc" type="line_extractor_rostest" />
+    <node name="line_extractor_node" pkg="line_extractor_igvc" type="line_extractor_node" />
+    <test test-name="line_extractor_node_rostest" pkg="line_extractor_igvc" type="line_extractor_node_rostest" />
 </launch>

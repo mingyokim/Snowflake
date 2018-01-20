@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
 )
+find_package(sb_utils REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -133,7 +134,7 @@ include_directories(
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
- add_executable(${PROJECT_NAME}_node src/line_extractor_node.cpp src/LineExtractorNode.cpp include/LineExtractorNode.h)
+ add_executable(line_extractor_node src/line_extractor_node.cpp src/LineExtractorNode.cpp include/LineExtractorNode.h)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -146,7 +147,7 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
- target_link_libraries(${PROJECT_NAME}_node
+ target_link_libraries(line_extractor_node
    ${catkin_LIBRARIES} ${sb_utils_LIBRARIES}
  )
 
@@ -198,8 +199,8 @@ include_directories(
 if (CATKIN_ENABLE_TESTING)
 
     # Adding gtests to the package
-    catkin_add_gtest(line-extractor-test test/line-extractor-node-test.cpp src/LineExtractorNode.cpp)
-    target_link_libraries(line-extractor-test ${catkin_LIBRARIES})
+#    catkin_add_gtest(line-extractor-test test/line-extractor-node-test.cpp src/LineExtractorNode.cpp)
+#    target_link_libraries(line-extractor-test ${catkin_LIBRARIES})
 
     # Adding rostest to the package
     find_package(rostest REQUIRED)
