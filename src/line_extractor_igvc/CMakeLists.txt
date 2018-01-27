@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 2.8.3)
 project(line_extractor_igvc)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+#add_compile_options(-std=c++11)
+add_compile_options(-std=c++14)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -12,6 +13,11 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 find_package(sb_utils REQUIRED)
+
+find_package(PCL 1.3 REQUIRED COMPONENTS common io)
+include_directories(${PCL_INCLUDE_DIRS})
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -149,6 +155,7 @@ include_directories(
 ## Specify libraries to link a library or executable target against
  target_link_libraries(line_extractor_node
    ${catkin_LIBRARIES} ${sb_utils_LIBRARIES}
+         ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES}
  )
 
 #############
@@ -199,6 +206,8 @@ include_directories(
 if (CATKIN_ENABLE_TESTING)
 
     # Adding gtests to the package
+    catkin_add_gtest(DBSCAN-test test/DBSCAN-test.cpp src/DBSCAN.cpp)
+    target_link_libraries(DBSCAN-test ${catkin_LIBRARIES})
 #    catkin_add_gtest(line-extractor-test test/line-extractor-node-test.cpp src/LineExtractorNode.cpp)
 #    target_link_libraries(line-extractor-test ${catkin_LIBRARIES})
 

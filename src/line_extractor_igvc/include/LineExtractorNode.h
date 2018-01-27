@@ -9,18 +9,14 @@
 
 #include <iostream>
 #include <std_msgs/Float32.h>
-#include <sensor_msgs/PointCloud.h>
-#include <geometry_msgs/Point.h>
+#include <sensor_msgs/PointCloud2.h>
+#include <pcl_conversions/pcl_conversions.h>
+#include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
 #include <ros/ros.h>
 #include <sb_utils.h>
 #include <math.h>
 #include <string>
-
-namespace geometry_msgs {
-    bool operator==(const Point &p1, const Point &p2) {
-        return p1.x == p2.x && p1.y == p2.y && p1.z == p2.z;
-    }
-};
 
 class LineExtractorNode {
 public:
@@ -32,9 +28,9 @@ private:
     ros::Subscriber subscriber;
     ros::Publisher publisher;
 
-    std::vector<geometry_msgs::Point> points;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr;
 
-    void pclCallBack(const sensor_msgs::PointCloud pointCloud);
+    void pclCallBack(const sensor_msgs::PointCloud2ConstPtr);
 };
 
 

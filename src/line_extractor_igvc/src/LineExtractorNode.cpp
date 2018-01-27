@@ -21,8 +21,12 @@ LineExtractorNode::LineExtractorNode(int argc, char **argv, std::string node_nam
     publisher = nh.advertise<std_msgs::Float32>(topic_to_publish_to, queue_size);
 }
 
-void LineExtractorNode::pclCallBack(sensor_msgs::PointCloud pointCloud) {
-    this->points = new std::vector(pointCloud.points);
+void LineExtractorNode::pclCallBack(const sensor_msgs::PointCloud2ConstPtr input) {
+    pcl::PCLPointCloud2 pcl_pc2;
+    pcl_conversions::toPCL(*input,pcl_pc2);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr temp_cloud(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::fromPCLPointCloud2(pcl_pc2,*temp_cloud);
+    this->pclPtr = temp_cloud;
     extractLines();
     return;
 }

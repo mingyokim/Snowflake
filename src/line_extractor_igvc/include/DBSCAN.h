@@ -7,28 +7,36 @@
 #ifndef PROJECT_DBSCAN_H
 #define PROJECT_DBSCAN_H
 
-#include <geometry_msgs/Point.h>
+#include <tr1/unordered_map>
+#include <pcl/point_types.h>
+#include <pcl/PCLPointCloud2.h>
+#include <pcl/conversions.h>
 
-using Point = geometry_msgs::Point;
 using namespace std;
+using namespace std::tr1;
 
 class DBSCAN {
-    vector<Point> _points;
-    vector<vector<Point>> _clusters;
+    pcl::PointCloud<pcl::PointXYZ> _pcl;
+    vector<vector<pcl::PointXYZ>> _clusters;
+    unordered_map<int,bool> _visited;
 
     // TODO: fine-tune parameters with real data
     int _min_neighbors = 5;
     float _radius = 5;
 
-    void expand(Point center, vector<Point> &cluster);
-    bool isCore(Point point);
+    void expand(int centerPointIndex, vector<pcl::PointXYZ> &cluster);
+    bool isCore(int centerPointIndex);
 
 public:
-    DBSCAN(int min_neighbours, int radius);
-    vector<vector<Point>> findClusters(vector<Point> points);
+    DBSCAN(int min_neighbours=5, int radius=5);
+    vector<vector<pcl::PointXYZ>> findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr);
     void setMinNeighbours(int new_min_neighour);
     void setRadius(float new_radius);
-    float dist(Point p1, Point p2);
+
+private:
+    float dist(pcl::PointXYZ p1, pcl::PointXYZ p2);
+    bool isPointVisited(int pIndex);
+//    bool arePointsEqual(Point p1, Point p2);
 };
 
 
