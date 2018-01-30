@@ -20,6 +20,7 @@ class DBSCAN {
     vector<vector<pcl::PointXYZ>> _clusters;
     unordered_map<int,bool> _visited;
     unordered_map<int,bool> _expanded;
+    unordered_map<int,bool> _is_core;
 
     // TODO: fine-tune parameters with real data
     int _min_neighbors = 5;

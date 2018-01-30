@@ -41,6 +41,11 @@ vector<vector<pcl::PointXYZ>> DBSCAN::findClusters(pcl::PointCloud<pcl::PointXYZ
 }
 
 bool DBSCAN::isCore(int centerIndex) {
+    unordered_map<int,bool>::const_iterator it = this->_is_core.find(centerIndex);
+    if( it != this->_is_core.end() ) {
+        return it->second;
+    }
+
     int numNeighbours = 0;
     for (unsigned int i = 0; i < this->_pcl.size(); i++ ) {
         pcl::PointXYZ currentPoint = this->_pcl[i];
@@ -49,7 +54,11 @@ bool DBSCAN::isCore(int centerIndex) {
         }
     }
 
-    if (numNeighbours >= this->_min_neighbors ) return true;
+    if (numNeighbours >= this->_min_neighbors ) {
+        this->_is_core.insert({centerIndex,true});
+        return true;
+    }
+    this->_is_core.insert({centerIndex,false});
     return false;
 }
 
@@ -65,7 +74,7 @@ void DBSCAN::expand(int centerIndex, vector<pcl::PointXYZ> &cluster) {
                 cluster.push_back(currentPoint);
                 this->_visited.insert({i,true});
             }
-            if (isCore(i) && !isPointExpanded(i)) {
+            if ( !isPointExpanded(i) && isCore(i) ) {
                 expand(i,cluster);
                 this->_expanded.insert({i,true});
             }
