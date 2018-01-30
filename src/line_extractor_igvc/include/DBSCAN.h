@@ -19,6 +19,7 @@ class DBSCAN {
     pcl::PointCloud<pcl::PointXYZ> _pcl;
     vector<vector<pcl::PointXYZ>> _clusters;
     unordered_map<int,bool> _visited;
+    unordered_map<int,bool> _expanded;
 
     // TODO: fine-tune parameters with real data
     int _min_neighbors = 5;
@@ -36,6 +37,7 @@ public:
 private:
     float dist(pcl::PointXYZ p1, pcl::PointXYZ p2);
     bool isPointVisited(int pIndex);
+    bool isPointExpanded(int pIndex);
 //    bool arePointsEqual(Point p1, Point p2);
 };
 
