@@ -153,6 +153,46 @@ TEST(DBSCAN, TestClusterTwoSlopedLines){
     EXPECT_EQ(secondLineLength, clusters[1].size());
 }
 
+TEST(DBSCAN, TestClusterTwoSlopedLinesWithOutliers){
+    int min_neighbours = 2;
+    int radius = 5;
+    DBSCAN dbscan(min_neighbours, radius);
+
+    pcl::PointCloud<pcl::PointXYZ> pcl;
+
+//    first line
+    int y1 = 100;
+    int m1 = 1;
+    int firstLineLength = 100;
+    for( int x = 0; x < firstLineLength; x++ ) {
+        pcl::PointXYZ p;
+        p.x = x;
+        p.y = m1*x+y1;
+        pcl.push_back(p);
+    }
+//second line
+    int y2 = -100;
+    int m2 = 1;
+    int secondLineLength = 100;
+    for( int x = 0; x < secondLineLength; x++ ) {
+        pcl::PointXYZ p;
+        p.x = x;
+        p.y = m2*x+y2;
+        pcl.push_back(p);
+    }
+
+//    outliers
+    pcl.push_back(pcl::PointXYZ(999999,999999,0));
+    pcl.push_back(pcl::PointXYZ(-999999,-999999,0));
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+
+    vector<vector<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    EXPECT_EQ(2, clusters.size());
+    EXPECT_EQ(firstLineLength, clusters[0].size());
+    EXPECT_EQ(secondLineLength, clusters[1].size());
+}
+
 TEST(DBSCAN, TestClusterTwoLongHorizontalLines){
     int min_neighbours = 1;
     int radius = 5;
@@ -162,7 +202,7 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines){
 
 //    first line
     int y1 = 10;
-    int firstLineLength = 2000;
+    int firstLineLength = 1000;
     int xinit = -10;
     for( int x = xinit; x < xinit+firstLineLength; x++ ) {
         pcl::PointXYZ p;
@@ -172,7 +212,7 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines){
     }
 //second line
     int y2 = -10;
-    int secondLineLength = 2000;
+    int secondLineLength = 1000;
     for( int x = xinit; x < xinit+secondLineLength; x++ ) {
         pcl::PointXYZ p;
         p.x = x;

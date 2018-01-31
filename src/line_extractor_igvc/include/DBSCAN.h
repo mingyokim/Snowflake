@@ -18,16 +18,16 @@ using namespace std::tr1;
 class DBSCAN {
     pcl::PointCloud<pcl::PointXYZ> _pcl;
     vector<vector<pcl::PointXYZ>> _clusters;
-    unordered_map<int,bool> _visited;
-    unordered_map<int,bool> _expanded;
-    unordered_map<int,bool> _is_core;
+    unordered_map<unsigned int,bool> _clustered;
+    unordered_map<unsigned int,bool> _expanded;
+    unordered_map<unsigned int,bool> _is_core;
 
     // TODO: fine-tune parameters with real data
     int _min_neighbors = 5;
     float _radius = 5;
 
-    void expand(int centerPointIndex, vector<pcl::PointXYZ> &cluster);
-    bool isCore(int centerPointIndex);
+    void expand(unsigned int centerPointIndex, vector<pcl::PointXYZ> &cluster);
+    bool isCore(unsigned int centerPointIndex);
 
 public:
     DBSCAN(int min_neighbours=5, int radius=5);
@@ -37,8 +37,8 @@ public:
 
 private:
     float dist(pcl::PointXYZ p1, pcl::PointXYZ p2);
-    bool isPointVisited(int pIndex);
-    bool isPointExpanded(int pIndex);
+    bool isPointVisited(unsigned int pIndex);
+    bool isPointExpanded(unsigned int pIndex);
 //    bool arePointsEqual(Point p1, Point p2);
 };
 
