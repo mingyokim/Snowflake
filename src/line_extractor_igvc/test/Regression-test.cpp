@@ -61,6 +61,35 @@ TEST(Regression, MultiplePerfectLinearFits) {
     }
 }
 
+TEST(Regression, OnePerfectNonLinearFit) {
+    unsigned int polyDegree = 3;
+
+    pcl::PointCloud<pcl::PointXYZ> pcl;
+
+    int y1 = 100;
+    float m1 = 7;
+    float m2 = -0.7;
+    float m3 = 0.007;
+
+    int num_points = 100;
+    for( int x = 0; x < num_points; x++ ) {
+        pcl::PointXYZ p;
+        p.x = x;
+        p.y = m1*x+m2*pow(x,2)+m3*pow(x,3)+y1;
+        pcl.push_back(p);
+    }
+
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
+    clusters.push_back(pcl);
+
+    vector<VectorXf> lines = Regression::getLinesOfBestFit(clusters, polyDegree);
+
+    EXPECT_NEAR(lines[0](0), y1, 1);
+    EXPECT_NEAR(lines[0](1), m1, 1);
+    EXPECT_NEAR(lines[0](2), m2, 1);
+    EXPECT_NEAR(lines[0](3), m3, 1);
+}
+
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
