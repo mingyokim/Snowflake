@@ -9,7 +9,7 @@
 DBSCAN::DBSCAN(int min_neighbours, int radius) {
     this->_min_neighbors = min_neighbours;
     this->_radius = radius;
-    this->_clusters = vector<vector<pcl::PointXYZ>>();
+    this->_clusters = vector<pcl::PointCloud<pcl::PointXYZ>>();
 }
 
 void DBSCAN::setMinNeighbours(int new_min_neighour) {
@@ -20,7 +20,7 @@ void DBSCAN::setRadius(float new_radius) {
     this->_radius = new_radius;
 }
 
-vector<vector<pcl::PointXYZ>> DBSCAN::findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr) {
+vector<pcl::PointCloud<pcl::PointXYZ>> DBSCAN::findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr) {
     this->_pcl = *pclPtr;
 
     for (unsigned int i = 0; i < this->_pcl.size(); i++) {
@@ -28,7 +28,7 @@ vector<vector<pcl::PointXYZ>> DBSCAN::findClusters(pcl::PointCloud<pcl::PointXYZ
             continue;
         }
         if( isCore(i) ) {
-            vector<pcl::PointXYZ> cluster = vector<pcl::PointXYZ>();
+            pcl::PointCloud<pcl::PointXYZ> cluster = pcl::PointCloud<pcl::PointXYZ>();
             pcl::PointXYZ currentPoint = this->_pcl[i];
             cluster.push_back(currentPoint);
             this->_clustered.insert({i,true});
@@ -62,7 +62,7 @@ bool DBSCAN::isCore(unsigned int centerIndex) {
     return false;
 }
 
-void DBSCAN::expand(unsigned int centerIndex, vector<pcl::PointXYZ> &cluster) {
+void DBSCAN::expand(unsigned int centerIndex, pcl::PointCloud<pcl::PointXYZ> &cluster) {
     this->_expanded.insert({centerIndex,true});
     for (unsigned int i = 0; i < this->_pcl.size(); i++) {
         if( i == centerIndex )  continue;

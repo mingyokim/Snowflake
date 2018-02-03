@@ -27,7 +27,7 @@ TEST(DBSCAN, ClusterTwoNearPoints) {
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
 
-    vector<vector<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
     EXPECT_EQ(1, clusters.size());
     EXPECT_EQ(2, clusters[0].size());
 }
@@ -52,7 +52,7 @@ TEST(DBSCAN, TestClusterTwoFarPoints){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
 
-    vector<vector<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
     EXPECT_EQ(0, clusters.size());
 }
 
@@ -80,7 +80,7 @@ TEST(DBSCAN, TestExpandCluster){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
 
-    vector<vector<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
     EXPECT_EQ(1, clusters.size());
     EXPECT_EQ(3, clusters[0].size());
 }
@@ -111,7 +111,7 @@ TEST(DBSCAN, TestClusterTwoShortHorizontalLines){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
 
-    vector<vector<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
     EXPECT_EQ(2, clusters.size());
     EXPECT_EQ(4, clusters[0].size());
     EXPECT_EQ(4, clusters[1].size());
@@ -147,7 +147,7 @@ TEST(DBSCAN, TestClusterTwoSlopedLines){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
 
-    vector<vector<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
     EXPECT_EQ(2, clusters.size());
     EXPECT_EQ(firstLineLength, clusters[0].size());
     EXPECT_EQ(secondLineLength, clusters[1].size());
@@ -187,7 +187,7 @@ TEST(DBSCAN, TestClusterTwoSlopedLinesWithOutliers){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
 
-    vector<vector<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
     EXPECT_EQ(2, clusters.size());
     EXPECT_EQ(firstLineLength, clusters[0].size());
     EXPECT_EQ(secondLineLength, clusters[1].size());
@@ -201,7 +201,7 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines){
     pcl::PointCloud<pcl::PointXYZ> pcl;
 
 //    first line
-    int y1 = 10;
+    int y1 = 3;
     int firstLineLength = 1000;
     int xinit = -10;
     for( int x = xinit; x < xinit+firstLineLength; x++ ) {
@@ -211,7 +211,7 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines){
         pcl.push_back(p);
     }
 //second line
-    int y2 = -10;
+    int y2 = -3;
     int secondLineLength = 1000;
     for( int x = xinit; x < xinit+secondLineLength; x++ ) {
         pcl::PointXYZ p;
@@ -222,7 +222,78 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
 
-    vector<vector<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    EXPECT_EQ(2, clusters.size());
+    EXPECT_EQ(firstLineLength, clusters[0].size());
+    EXPECT_EQ(secondLineLength, clusters[1].size());
+}
+
+TEST(DBSCAN, TestClusterBorder){
+    int min_neighbours = 1;
+    int radius = 6;
+    DBSCAN dbscan(min_neighbours, radius);
+
+    pcl::PointCloud<pcl::PointXYZ> pcl;
+
+//    first line
+    float y1 = 3.000001;
+    int firstLineLength = 3;
+    int xinit = -10;
+    for( int x = xinit; x < xinit+firstLineLength; x++ ) {
+        pcl::PointXYZ p;
+        p.x = x;
+        p.y = y1;
+        pcl.push_back(p);
+    }
+//second line
+    float y2 = -3;
+    int secondLineLength = 3;
+    for( int x = xinit; x < xinit+secondLineLength; x++ ) {
+        pcl::PointXYZ p;
+        p.x = x;
+        p.y = y2;
+        pcl.push_back(p);
+    }
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    EXPECT_EQ(2, clusters.size());
+    EXPECT_EQ(firstLineLength, clusters[0].size());
+    EXPECT_EQ(secondLineLength, clusters[1].size());
+}
+
+TEST(DBSCAN, TestClusterTwoPolynomialLines){
+    int min_neighbours = 1;
+    int radius = 3;
+    DBSCAN dbscan(min_neighbours, radius);
+
+    pcl::PointCloud<pcl::PointXYZ> pcl;
+
+//    first line
+    int y1 = 10;
+    int firstLineLength = 40;
+    int xinit = -20;
+    float a = 0.002;
+    for( int x = xinit; x < xinit+firstLineLength; x++ ) {
+        pcl::PointXYZ p;
+        p.x = x;
+        p.y = a*pow(x,3)+y1;
+        pcl.push_back(p);
+    }
+//second line
+    int y2 = -10;
+    int secondLineLength = 40;
+    for( int x = xinit; x < xinit+secondLineLength; x++ ) {
+        pcl::PointXYZ p;
+        p.x = x;
+        p.y = a*pow(x,3)+y2;
+        pcl.push_back(p);
+    }
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
     EXPECT_EQ(2, clusters.size());
     EXPECT_EQ(firstLineLength, clusters[0].size());
     EXPECT_EQ(secondLineLength, clusters[1].size());

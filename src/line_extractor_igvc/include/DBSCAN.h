@@ -17,7 +17,7 @@ using namespace std::tr1;
 
 class DBSCAN {
     pcl::PointCloud<pcl::PointXYZ> _pcl;
-    vector<vector<pcl::PointXYZ>> _clusters;
+    vector<pcl::PointCloud<pcl::PointXYZ>> _clusters;
     unordered_map<unsigned int,bool> _clustered;
     unordered_map<unsigned int,bool> _expanded;
     unordered_map<unsigned int,bool> _is_core;
@@ -26,12 +26,12 @@ class DBSCAN {
     int _min_neighbors = 5;
     float _radius = 5;
 
-    void expand(unsigned int centerPointIndex, vector<pcl::PointXYZ> &cluster);
+    void expand(unsigned int centerPointIndex, pcl::PointCloud<pcl::PointXYZ> &cluster);
     bool isCore(unsigned int centerPointIndex);
 
 public:
     DBSCAN(int min_neighbours=5, int radius=5);
-    vector<vector<pcl::PointXYZ>> findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr);
+    vector<pcl::PointCloud<pcl::PointXYZ>> findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr);
     void setMinNeighbours(int new_min_neighour);
     void setRadius(float new_radius);
 
