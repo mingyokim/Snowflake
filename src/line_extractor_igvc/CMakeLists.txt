@@ -208,6 +208,9 @@ if (CATKIN_ENABLE_TESTING)
     # Adding gtests to the package
     catkin_add_gtest(DBSCAN-test test/DBSCAN-test.cpp src/DBSCAN.cpp)
     target_link_libraries(DBSCAN-test ${catkin_LIBRARIES})
+
+    catkin_add_gtest(Regression-test test/Regression-test.cpp src/Regression.cpp)
+    target_link_libraries(Regression-test ${catkin_LIBRARIES})
 #    catkin_add_gtest(line-extractor-test test/line-extractor-node-test.cpp src/LineExtractorNode.cpp)
 #    target_link_libraries(line-extractor-test ${catkin_LIBRARIES})
 
