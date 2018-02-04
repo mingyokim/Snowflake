@@ -202,7 +202,7 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines){
 
 //    first line
     int y1 = 3;
-    int firstLineLength = 1000;
+    int firstLineLength = 500;
     int xinit = -10;
     for( int x = xinit; x < xinit+firstLineLength; x++ ) {
         pcl::PointXYZ p;
@@ -212,7 +212,7 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines){
     }
 //second line
     int y2 = -3;
-    int secondLineLength = 1000;
+    int secondLineLength = 500;
     for( int x = xinit; x < xinit+secondLineLength; x++ ) {
         pcl::PointXYZ p;
         p.x = x;
@@ -222,7 +222,7 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines){
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
 
-    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
     EXPECT_EQ(2, clusters.size());
     EXPECT_EQ(firstLineLength, clusters[0].size());
     EXPECT_EQ(secondLineLength, clusters[1].size());
