@@ -299,6 +299,96 @@ TEST(DBSCAN, TestClusterTwoPolynomialLines){
     EXPECT_EQ(secondLineLength, clusters[1].size());
 }
 
+TEST(DBSCAN, TestClusterOnePolynomialLinesWithNoise){
+    int min_neighbours = 1;
+    int radius = 80;
+    DBSCAN dbscan(min_neighbours, radius);
+
+    pcl::PointCloud<pcl::PointXYZ> pcl;
+
+    int y1 = 100;
+    float m1 = 7;
+    float m2 = -0.7;
+    float m3 = 0.007;
+
+    int num_points = 100;
+    for( float x = 0; x < num_points; x ++ ) {
+        float true_y = m1*x+m2*pow(x,2)+m3*pow(x,3)+y1;
+        float true_x = x;
+
+        float noise_y = ((float) rand() / (RAND_MAX))*2-1;
+        float noise_x = ((float) rand() / (RAND_MAX))*2-1;
+
+        float deformed_y = true_y + noise_y;
+        float deformed_x = true_x + noise_x;
+
+        pcl::PointXYZ p;
+        p.x = deformed_x;
+        p.y = deformed_y;
+        pcl.push_back(p);
+    }
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    EXPECT_EQ(1, clusters.size());
+    EXPECT_EQ(num_points, clusters[0].size());
+}
+
+TEST(DBSCAN, TestClusterTwoPolynomialLinesWithNoise){
+    int min_neighbours = 1;
+    int radius = 80;
+    DBSCAN dbscan(min_neighbours, radius);
+
+    pcl::PointCloud<pcl::PointXYZ> pcl;
+
+    int y1 = 1000;
+    float m1 = 7;
+    float m2 = -0.7;
+    float m3 = 0.007;
+
+    int num_points = 100;
+    for( float x = 0; x < num_points; x ++ ) {
+        float true_y = m1*x+m2*pow(x,2)+m3*pow(x,3)+y1;
+        float true_x = x;
+
+        float noise_y = ((float) rand() / (RAND_MAX))*2-1;
+        float noise_x = ((float) rand() / (RAND_MAX))*2-1;
+
+        float deformed_y = true_y + noise_y;
+        float deformed_x = true_x + noise_x;
+
+        pcl::PointXYZ p;
+        p.x = deformed_x;
+        p.y = deformed_y;
+        pcl.push_back(p);
+    }
+
+    int y2 = -1000;
+    for( float x = 0; x < num_points; x ++ ) {
+        float true_y = m1*x+m2*pow(x,2)+m3*pow(x,3)+y2;
+        float true_x = x;
+
+        float noise_y = ((float) rand() / (RAND_MAX))*2-1;
+        float noise_x = ((float) rand() / (RAND_MAX))*2-1;
+
+        float deformed_y = true_y + noise_y;
+        float deformed_x = true_x + noise_x;
+
+        pcl::PointXYZ p;
+        p.x = deformed_x;
+        p.y = deformed_y;
+        pcl.push_back(p);
+    }
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+
+    vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+    EXPECT_EQ(2, clusters.size());
+    EXPECT_EQ(num_points, clusters[0].size());
+    EXPECT_EQ(num_points, clusters[1].size());
+}
+
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
