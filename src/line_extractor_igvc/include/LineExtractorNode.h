@@ -17,6 +17,8 @@
 #include <sb_utils.h>
 #include <math.h>
 #include <string>
+#include "DBSCAN.h"
+#include "Regression.h"
 
 class LineExtractorNode {
 public:
@@ -27,6 +29,9 @@ public:
 private:
     ros::Subscriber subscriber;
     ros::Publisher publisher;
+
+    DBSCAN dbscasn;
+    Regression regression;
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr;
 

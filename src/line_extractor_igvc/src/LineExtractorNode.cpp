@@ -19,6 +19,10 @@ LineExtractorNode::LineExtractorNode(int argc, char **argv, std::string node_nam
     std::string topic_to_publish_to = "/lines"; //dummy topic name
     uint32_t queue_size = 1;
     publisher = nh.advertise<std_msgs::Float32>(topic_to_publish_to, queue_size);
+
+    //TODO: use sb_utils to input parameters (degree of polynomial, lambda, min neighbours, radius)
+
+
 }
 
 void LineExtractorNode::pclCallBack(const sensor_msgs::PointCloud2ConstPtr input) {
@@ -35,9 +39,12 @@ void LineExtractorNode::extractLines() {
 //TODO: call line extractor to actually extract lines
 
     //dummy message type and data
-    std_msgs::Float32 msg;
-    msg.data = 9.9;
-    publisher.publish(msg);
+//    std_msgs::Float32 msg;
+//    msg.data = 9.9;
+//    publisher.publish(msg);
+    std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters = this->dbscasn.findClusters(this->pclPtr);
+    std::vector<Eigen::VectorXf> lines = regression.getLinesOfBestFit(clusters, 3);
+
 
     return;
 }
