@@ -35,7 +35,7 @@ private:
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr;
 
-    void pclCallBack(const sensor_msgs::PointCloud2ConstPtr);
+    void pclCallBack(const sensor_msgs::PointCloud2ConstPtr input);
     std::vector<mapping_igvc::LineObstacle> vectorsToMsgs(std::vector<Eigen::VectorXf> vectors);
     mapping_igvc::LineObstacle vectorToLineObstacle(Eigen::VectorXf vector);
 };

@@ -25,7 +25,7 @@ LineExtractorNode::LineExtractorNode(int argc, char **argv, std::string node_nam
 
 }
 
-void LineExtractorNode::pclCallBack(const sensor_msgs::PointCloud2Ptr input) {
+void LineExtractorNode::pclCallBack(const sensor_msgs::PointCloud2ConstPtr input) {
     pcl::PCLPointCloud2 pcl_pc2;
     pcl_conversions::toPCL(*input,pcl_pc2);
     pcl::PointCloud<pcl::PointXYZ>::Ptr temp_cloud(new pcl::PointCloud<pcl::PointXYZ>);
