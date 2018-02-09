@@ -8,7 +8,6 @@
 #define PROJECT_LINEEXTRACTOR_H
 
 #include <iostream>
-#include <std_msgs/Float32.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
@@ -19,6 +18,7 @@
 #include <string>
 #include "DBSCAN.h"
 #include "Regression.h"
+#include <mapping_igvc/LineObstacle.h>
 
 class LineExtractorNode {
 public:
@@ -36,6 +36,8 @@ private:
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr;
 
     void pclCallBack(const sensor_msgs::PointCloud2ConstPtr);
+    std::vector<mapping_igvc::LineObstacle> vectorsToMsgs(std::vector<Eigen::VectorXf> vectors);
+    mapping_igvc::LineObstacle vectorToLineObstacle(Eigen::VectorXf vector);
 };
 
 

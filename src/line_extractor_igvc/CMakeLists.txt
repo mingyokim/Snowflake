@@ -13,7 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
 )
 find_package(sb_utils REQUIRED)
-
+find_package(mapping_igvc REQUIRED)
 find_package(PCL 1.3 REQUIRED COMPONENTS common io)
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
@@ -125,6 +125,7 @@ include_directories(
         ./include
   ${catkin_INCLUDE_DIRS}
         ${sb_utils_INCLUDE_DIRS}
+        ${mapping_igvc_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -154,7 +155,7 @@ include_directories(
 
 ## Specify libraries to link a library or executable target against
  target_link_libraries(line_extractor_node
-   ${catkin_LIBRARIES} ${sb_utils_LIBRARIES}
+   ${catkin_LIBRARIES} ${sb_utils_LIBRARIES} ${mapping_igvc_LIBRARIES}
          ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES}
  )
 
@@ -218,7 +219,7 @@ if (CATKIN_ENABLE_TESTING)
     find_package(rostest REQUIRED)
     # name the test and link it to the .test file and the .cpp file itself, this will allow
     # "catkin_make run_tests" to be able to find and run this rostest
-    add_rostest_gtest(line_extractor_rostest test/line_extractor_test.test test/line_extractor_rostest.cpp)
+    add_rostest_gtest(line_extractor_rostest test/line_extractor_test.test test/line_extractor_rostest.cpp src/DBSCAN.cpp src/Regression.cpp)
     target_link_libraries(line_extractor_rostest ${catkin_LIBRARIES})
 endif()
 

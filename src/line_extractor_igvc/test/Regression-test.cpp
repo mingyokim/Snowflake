@@ -95,7 +95,7 @@ TEST(Regression, OneNonLinearFitWithNoise) {
 
     pcl::PointCloud<pcl::PointXYZ> pcl;
 
-    int y1 = 100;
+    int y1 = 1000;
     float m1 = 7;
     float m2 = -0.7;
     float m3 = 0.007;

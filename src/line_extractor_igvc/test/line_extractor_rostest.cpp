@@ -7,7 +7,9 @@
 #include <gtest/gtest.h>
 #include <ros/ros.h>
 #include <std_msgs/Float32.h>
-#include <sensor_msgs/PointCloud.h>
+#include <sensor_msgs/PointCloud2.h>
+#include <mapping_igvc/LineObstacle.h>
+#include <pcl_conversions/pcl_conversions.h>
 
 /**
  * This is the helper class which will publish and subscribe messages which will test the node being instantiated
@@ -20,7 +22,7 @@
 class LineExtractorRosTest : public testing::Test{
 protected:
     virtual void SetUp(){
-        test_publisher = nh_.advertise<sensor_msgs::PointCloud>("/pcl", 1);
+        test_publisher = nh_.advertise<sensor_msgs::PointCloud2>("/pcl", 1);
         test_subscriber = nh_.subscribe("/lines", 1, &LineExtractorRosTest::callback, this);
 
         // Let the publishers and subscribers set itself up timely
@@ -29,21 +31,46 @@ protected:
     }
 
     ros::NodeHandle nh_;
-    float message_output;
+    mapping_igvc::LineObstacle lineObstacle;
     ros::Publisher test_publisher;
     ros::Subscriber test_subscriber;
 
 public:
 
-    void callback(const std_msgs::Float32& scan){
-        message_output = scan.data;
+    void callback(const mapping_igvc::LineObstacle& line){
+        lineObstacle = line;
     }
 };
 
 TEST_F(LineExtractorRosTest, getAngularVel){
-    sensor_msgs::PointCloud pcl;
+    pcl::PointCloud<pcl::PointXYZ> pcl;
 
-    test_publisher.publish(pcl);
+    int y1 = 1000;
+    float m1 = 7;
+    float m2 = -0.7;
+    float m3 = 0.007;
+
+    int num_points = 100;
+    for( float x = 0; x < num_points; x ++ ) {
+        float true_y = m1*x+m2*pow(x,2)+m3*pow(x,3)+y1;
+        float true_x = x;
+
+        float noise_y = ((float) rand() / (RAND_MAX))*2-1;
+        float noise_x = ((float) rand() / (RAND_MAX))*2-1;
+
+        float deformed_y = true_y + noise_y;
+        float deformed_x = true_x + noise_x;
+
+        pcl::PointXYZ p;
+        p.x = deformed_x;
+        p.y = deformed_y;
+        pcl.push_back(p);
+    }
+
+    sensor_msgs::PointCloud2 msg;
+    pcl::toROSMsg(pcl,msg);
+
+    test_publisher.publish(msg);
     ros::Rate loop_rate(1);
 
     // Wait for the message to get passed around
@@ -53,7 +80,10 @@ TEST_F(LineExtractorRosTest, getAngularVel){
     // for the curious: http://answers.ros.org/question/11887/significance-of-rosspinonce/
     ros::spinOnce();
 
-    EXPECT_FLOAT_EQ(9.9, message_output);
+    EXPECT_NEAR(lineObstacle.coefficients[0], y1, 10);
+    EXPECT_NEAR(lineObstacle.coefficients[1], m1, 5);
+    EXPECT_NEAR(lineObstacle.coefficients[2], m2, 5);
+    EXPECT_NEAR(lineObstacle.coefficients[3], m3, 5);
 }
 
 
