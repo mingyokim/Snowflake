@@ -72,7 +72,7 @@ private:
 
     /*
      * Finds all the neighbours of each point in the PointCloud
-     *
+     * (A neighbour is a point that is within @_radius of a point of interest)
      */
     void findNeighbors();
 
