@@ -35,7 +35,10 @@ private:
     DBSCAN dbscan;
     Regression regression;
 
-
+    int degreePoly;
+    float lambda;
+    int minNeighbours;
+    float radius;
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr;
 

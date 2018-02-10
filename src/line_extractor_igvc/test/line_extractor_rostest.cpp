@@ -80,6 +80,7 @@ TEST_F(LineExtractorRosTest, getAngularVel){
     // for the curious: http://answers.ros.org/question/11887/significance-of-rosspinonce/
     ros::spinOnce();
 
+    ASSERT_EQ(lineObstacle.coefficients.size(), 4);
     EXPECT_NEAR(lineObstacle.coefficients[0], y1, 10);
     EXPECT_NEAR(lineObstacle.coefficients[1], m1, 5);
     EXPECT_NEAR(lineObstacle.coefficients[2], m2, 5);

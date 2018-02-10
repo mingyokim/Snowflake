@@ -10,6 +10,24 @@ LineExtractorNode::LineExtractorNode(int argc, char **argv, std::string node_nam
     ros::init(argc, argv, node_name);
     ros::NodeHandle nh;
 
+    std::string degree_polynomial_param = "line_extractor/degree_polynomial";
+    int default_degree_polynomial = 3;
+    SB_getParam(nh, degree_polynomial_param, this->degreePoly, default_degree_polynomial);
+
+    std::string lambda_param = "line_extractor/lambda";
+    float default_lambda = 0;
+    SB_getParam(nh, lambda_param, this->lambda, default_lambda);
+
+    std::string min_neighbours_param = "line_extractor/min_neighbours";
+    int default_min_neighbours = 1;
+    SB_getParam(nh, min_neighbours_param, this->minNeighbours, default_min_neighbours);
+
+    std::string radius_param = "line_extractor/radius";
+    float default_radius = 80;
+    SB_getParam(nh, radius_param, this->radius, default_radius);
+
+//    ros::shutdown
+
     //TODO: change subscriber topic name when it's determined
     std::string topic_to_subscribe_to = "/pcl"; // dummy topic name
     int refresh_rate = 10;
@@ -20,7 +38,8 @@ LineExtractorNode::LineExtractorNode(int argc, char **argv, std::string node_nam
     uint32_t queue_size = 1;
     publisher = nh.advertise<mapping_igvc::LineObstacle>(topic_to_publish_to, queue_size);
 
-    //TODO: use sb_utils to input parameters (degree of polynomial, lambda, min neighbours, radius)
+    this->dbscan.setRadius(this->radius);
+    this->dbscan.setMinNeighbours(this->minNeighbours);
 }
 
 void LineExtractorNode::pclCallBack(const sensor_msgs::PointCloud2ConstPtr input) {
@@ -34,11 +53,8 @@ void LineExtractorNode::pclCallBack(const sensor_msgs::PointCloud2ConstPtr input
 }
 
 void LineExtractorNode::extractLines() {
-    this->dbscan.setRadius(80);
-    this->dbscan.setMinNeighbours(1);
     this->clusters = this->dbscan.findClusters(this->pclPtr);
-    //TODO: change degree of polynomial with a variable
-    std::vector<Eigen::VectorXf> lines = regression.getLinesOfBestFit(this->clusters, 3);
+    std::vector<Eigen::VectorXf> lines = regression.getLinesOfBestFit(this->clusters, this->degreePoly);
 
     std::vector<mapping_igvc::LineObstacle> lineObstacles = vectorsToMsgs(lines);
 
