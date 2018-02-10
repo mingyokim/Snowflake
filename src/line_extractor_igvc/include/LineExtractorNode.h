@@ -46,6 +46,7 @@ private:
     std::vector<mapping_igvc::LineObstacle> vectorsToMsgs(std::vector<Eigen::VectorXf> vectors);
     mapping_igvc::LineObstacle vectorToLineObstacle(Eigen::VectorXf vector, unsigned int clusterIndex);
     void getClusterXRange(double &xmin, double &xmax, unsigned int clusterIndex);
+    bool areParamsInvalid();
 };
 
 

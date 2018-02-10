@@ -26,7 +26,9 @@ LineExtractorNode::LineExtractorNode(int argc, char **argv, std::string node_nam
     float default_radius = 80;
     SB_getParam(nh, radius_param, this->radius, default_radius);
 
-//    ros::shutdown
+    if( areParamsInvalid() ) {
+        ros::shutdown();
+    }
 
     //TODO: change subscriber topic name when it's determined
     std::string topic_to_subscribe_to = "/pcl"; // dummy topic name
@@ -63,6 +65,10 @@ void LineExtractorNode::extractLines() {
     }
 
     return;
+}
+
+bool LineExtractorNode::areParamsInvalid() {
+    return this->degreePoly < 0 || this->lambda < 0 || this->minNeighbours < 0 || this->radius < 0;
 }
 
 std::vector<mapping_igvc::LineObstacle> LineExtractorNode::vectorsToMsgs(std::vector<Eigen::VectorXf> vectors) {
