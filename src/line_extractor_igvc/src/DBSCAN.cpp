@@ -30,11 +30,16 @@ vector<pcl::PointCloud<pcl::PointXYZ>> DBSCAN::findClusters(pcl::PointCloud<pcl:
             continue;
         }
         if( isCore(i) ) {
+            // create a new cluster, and assign current point to it
             pcl::PointCloud<pcl::PointXYZ> cluster = pcl::PointCloud<pcl::PointXYZ>();
             pcl::PointXYZ currentPoint = this->_pcl[i];
             cluster.push_back(currentPoint);
             this->_clustered.insert({i,true});
+
+            // expand the cluster, centering on current point
             expand(i, cluster);
+
+            // add this cluster to the list of clusters
             this->_clusters.push_back(cluster);
         }
     }
@@ -51,14 +56,19 @@ void DBSCAN::expand(unsigned int centerIndex, pcl::PointCloud<pcl::PointXYZ> &cl
     this->_expanded.insert({centerIndex,true});
 
     vector<unsigned int> neighbors = this->_neighbors.find(centerIndex)->second;
+
+    // iterate through all the neighbors of the point
     for (unsigned int i = 0; i < neighbors.size(); i++) {
         unsigned int currentIndex = neighbors[i];
         pcl::PointXYZ currentPoint = this->_pcl[currentIndex];
 
+        // add neighbor point to the cluster if it hasn't already been clustered
         if( !isPointVisited(currentIndex) ) {
             cluster.push_back(currentPoint);
             this->_clustered.insert({currentIndex,true});
         }
+
+        // expand on the neighbour point if it is a core and it hasn't been expanded yet
         if ( !isPointExpanded(currentIndex) && isCore(currentIndex) ) {
             expand(currentIndex,cluster);
             this->_expanded.insert({currentIndex,true});
@@ -72,6 +82,8 @@ void DBSCAN::findNeighbors() {
     for( unsigned int i = 0; i < this->_pcl.size(); i++ ) {
         vector<unsigned int> neighbors;
         pcl::PointXYZ currentPoint = this->_pcl[i];
+
+        // for currentPoint, determine all neighbour points that are within predetermined radius
         for( unsigned int j = 0; j < this->_pcl.size(); j++ ) {
             if( i==j )  continue;
             pcl::PointXYZ neighborPoint = this->_pcl[j];
@@ -80,6 +92,7 @@ void DBSCAN::findNeighbors() {
             }
         }
 
+        // store the list of neighbours
         this->_neighbors.insert({i,neighbors});
     }
 }

@@ -10,6 +10,7 @@ LineExtractorNode::LineExtractorNode(int argc, char **argv, std::string node_nam
     ros::init(argc, argv, node_name);
     ros::NodeHandle nh;
 
+    //TODO: change defaults
     std::string degree_polynomial_param = "line_extractor/degree_polynomial";
     int default_degree_polynomial = 3;
     SB_getParam(nh, degree_polynomial_param, this->degreePoly, default_degree_polynomial);

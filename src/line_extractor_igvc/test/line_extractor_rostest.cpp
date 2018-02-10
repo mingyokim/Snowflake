@@ -22,6 +22,11 @@
 class LineExtractorRosTest : public testing::Test{
 protected:
     virtual void SetUp(){
+//        nh_.setParam("line_extractor/degree_polynomial", 3);
+//        nh_.setParam("line_extractor/lambda", 0);
+//        nh_.setParam("line_extractor/min_neighbours", 1);
+//        nh_.setParam("line_extractor/radius", 80);
+
         test_publisher = nh_.advertise<sensor_msgs::PointCloud2>("/pcl", 1);
         test_subscriber = nh_.subscribe("/lines", 1, &LineExtractorRosTest::callback, this);
 
@@ -43,6 +48,8 @@ public:
 };
 
 TEST_F(LineExtractorRosTest, getAngularVel){
+
+
     pcl::PointCloud<pcl::PointXYZ> pcl;
 
     int y1 = 1000;

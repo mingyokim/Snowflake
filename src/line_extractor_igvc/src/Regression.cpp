@@ -18,8 +18,29 @@ vector<VectorXf> Regression::getLinesOfBestFit(vector<PointCloud<PointXYZ>> clus
 
 VectorXf Regression::getLineOfCluster(PointCloud<PointXYZ> cluster, unsigned int polyDegree, float lambda) {
     unsigned int n = cluster.size();
-    MatrixXf mat(n, polyDegree+1);
+
+    /*
+     * Linear Equation to solve:
+     * X' * X + lambda * I = X' * y
+     *
+     * X is a matrix of size (n,d) where n is the number of points in the cluster,
+     * and d is the polynomial degree + 1. (+1 for linear bias)
+     * Each row of X represents the x coordinate of a point.
+     * Given x for the x coordinate of a point and column for the column index
+     * in the matrix X:
+     * The first column of X is 1 for linear bias, and the rest of the columns
+     * contain the value of pow(x, column-1).
+     *
+     * lambda is the regularization parameter. The higher this number,
+     * The higher the penalty on the size of the coefficients of the mathematical lines.
+     *
+     * y is a column vector of size (n), where n is the number of points in the cluster.
+     * Each row of the vector corresponds to the y coordinate of a point.
+     */
+
+    MatrixXf X(n, polyDegree+1);
     VectorXf y(n);
+
 
     for( unsigned int i = 0; i < cluster.size(); i++ ) {
         PointXYZ point = cluster[i];
@@ -31,7 +52,7 @@ VectorXf Regression::getLineOfCluster(PointCloud<PointXYZ> cluster, unsigned int
             row(j) = pow( point.x, j );
         }
 
-        mat.row(i) = row;
+        X.row(i) = row;
 
         y(i) = point.y;
     }
@@ -40,8 +61,8 @@ VectorXf Regression::getLineOfCluster(PointCloud<PointXYZ> cluster, unsigned int
     regularization.setIdentity();
     regularization *= lambda;
 
-    MatrixXf left(mat.transpose()*mat + regularization);
-    MatrixXf right(mat.transpose()*y);
+    MatrixXf left(X.transpose()*X + regularization);
+    MatrixXf right(X.transpose()*y);
 
     VectorXf line(n);
     line = (left).ldlt().solve(right);
