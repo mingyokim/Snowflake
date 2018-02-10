@@ -84,6 +84,8 @@ TEST_F(LineExtractorRosTest, getAngularVel){
     EXPECT_NEAR(lineObstacle.coefficients[1], m1, 5);
     EXPECT_NEAR(lineObstacle.coefficients[2], m2, 5);
     EXPECT_NEAR(lineObstacle.coefficients[3], m3, 5);
+    EXPECT_NEAR(lineObstacle.x_min, 0, 1);
+    EXPECT_NEAR(lineObstacle.x_max, 99, 1);
 }
 
 

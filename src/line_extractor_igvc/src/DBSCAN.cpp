@@ -6,7 +6,7 @@
 
 #include <DBSCAN.h>
 
-DBSCAN::DBSCAN(int min_neighbours, int radius) {
+DBSCAN::DBSCAN(int min_neighbours, float radius) {
     this->_min_neighbors = min_neighbours;
     this->_radius = radius;
     this->_clusters = vector<pcl::PointCloud<pcl::PointXYZ>>();
@@ -52,8 +52,9 @@ void DBSCAN::expand(unsigned int centerIndex, pcl::PointCloud<pcl::PointXYZ> &cl
 
     vector<unsigned int> neighbors = this->_neighbors.find(centerIndex)->second;
     for (unsigned int i = 0; i < neighbors.size(); i++) {
-        pcl::PointXYZ currentPoint = this->_pcl[i];
         unsigned int currentIndex = neighbors[i];
+        pcl::PointXYZ currentPoint = this->_pcl[currentIndex];
+
         if( !isPointVisited(currentIndex) ) {
             cluster.push_back(currentPoint);
             this->_clustered.insert({currentIndex,true});
@@ -83,9 +84,9 @@ void DBSCAN::findNeighbors() {
     }
 }
 
-float DBSCAN::dist(pcl::PointXYZ p1, pcl::PointXYZ p2) {
-    float dx = abs( p1.x - p2.x);
-    float dy = abs( p1.y - p2.y);
+double DBSCAN::dist(pcl::PointXYZ p1, pcl::PointXYZ p2) {
+    double dx = abs( p1.x - p2.x);
+    double dy = abs( p1.y - p2.y);
     return sqrt(pow(dx,2)+pow(dy,2));
 }
 

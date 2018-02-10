@@ -22,6 +22,8 @@
 
 class LineExtractorNode {
 public:
+    std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
+
     LineExtractorNode(int argc, char **argv, std::string node_name);
 
     // main entry function
@@ -30,14 +32,17 @@ private:
     ros::Subscriber subscriber;
     ros::Publisher publisher;
 
-    DBSCAN dbscasn;
+    DBSCAN dbscan;
     Regression regression;
+
+
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr;
 
     void pclCallBack(const sensor_msgs::PointCloud2ConstPtr input);
     std::vector<mapping_igvc::LineObstacle> vectorsToMsgs(std::vector<Eigen::VectorXf> vectors);
-    mapping_igvc::LineObstacle vectorToLineObstacle(Eigen::VectorXf vector);
+    mapping_igvc::LineObstacle vectorToLineObstacle(Eigen::VectorXf vector, unsigned int clusterIndex);
+    void getClusterXRange(double &xmin, double &xmax, unsigned int clusterIndex);
 };
 
 

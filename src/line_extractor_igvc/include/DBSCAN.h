@@ -24,19 +24,19 @@ class DBSCAN {
 
     // TODO: fine-tune parameters with real data
     int _min_neighbors = 5;
-    float _radius = 5;
+    double _radius = 5;
 
     void expand(unsigned int centerPointIndex, pcl::PointCloud<pcl::PointXYZ> &cluster);
     bool isCore(unsigned int centerPointIndex);
 
 public:
-    DBSCAN(int min_neighbours=5, int radius=5);
+    DBSCAN(int min_neighbours=5, float radius=5);
     vector<pcl::PointCloud<pcl::PointXYZ>> findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr);
     void setMinNeighbours(int new_min_neighour);
     void setRadius(float new_radius);
 
 private:
-    float dist(pcl::PointXYZ p1, pcl::PointXYZ p2);
+    double dist(pcl::PointXYZ p1, pcl::PointXYZ p2);
     bool isPointVisited(unsigned int pIndex);
     bool isPointExpanded(unsigned int pIndex);
     void findNeighbors();

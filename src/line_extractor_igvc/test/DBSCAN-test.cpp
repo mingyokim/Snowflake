@@ -30,6 +30,13 @@ TEST(DBSCAN, ClusterTwoNearPoints) {
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
     EXPECT_EQ(1, clusters.size());
     EXPECT_EQ(2, clusters[0].size());
+
+    for( int i = 0; i < clusters[0].size(); i++ ) {
+        std::cout << clusters[0][i].x << std::endl;
+    }
+
+    EXPECT_EQ(1, clusters[0][0].x);
+    EXPECT_FLOAT_EQ(1.1, clusters[0][1].x);
 }
 
 TEST(DBSCAN, TestClusterTwoFarPoints){
@@ -312,6 +319,9 @@ TEST(DBSCAN, TestClusterOnePolynomialLinesWithNoise){
     float m3 = 0.007;
 
     int num_points = 100;
+
+    double truemin, truemax;
+
     for( float x = 0; x < num_points; x ++ ) {
         float true_y = m1*x+m2*pow(x,2)+m3*pow(x,3)+y1;
         float true_x = x;
@@ -326,13 +336,39 @@ TEST(DBSCAN, TestClusterOnePolynomialLinesWithNoise){
         p.x = deformed_x;
         p.y = deformed_y;
         pcl.push_back(p);
+
+        if( x == 0 ) {
+            truemin = truemax = p.x;
+        } else {
+            if( p.x < truemin ) {
+                truemin = p.x;
+            } else if( p.x > truemax ) {
+                truemax = p.x;
+            }
+        }
     }
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters = dbscan.findClusters(pclPtr);
+
+    double min, max;
+    pcl::PointCloud<pcl::PointXYZ> cluster = clusters[0];
+    min = max = cluster[0].x;
+
+    for( unsigned int i = 0; i < cluster.size(); i++ ) {
+        if( cluster[i].x < min ) {
+            min = cluster[i].x;
+        }
+        if( cluster[i].x > max ) {
+            max = cluster[i].x;
+        }
+    }
+
     EXPECT_EQ(1, clusters.size());
     EXPECT_EQ(num_points, clusters[0].size());
+    EXPECT_NEAR(min, truemin, 1);
+    EXPECT_NEAR(max, truemax, 1);
 }
 
 TEST(DBSCAN, TestClusterTwoPolynomialLinesWithNoise){

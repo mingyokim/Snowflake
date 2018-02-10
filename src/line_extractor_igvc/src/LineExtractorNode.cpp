@@ -21,8 +21,6 @@ LineExtractorNode::LineExtractorNode(int argc, char **argv, std::string node_nam
     publisher = nh.advertise<mapping_igvc::LineObstacle>(topic_to_publish_to, queue_size);
 
     //TODO: use sb_utils to input parameters (degree of polynomial, lambda, min neighbours, radius)
-
-
 }
 
 void LineExtractorNode::pclCallBack(const sensor_msgs::PointCloud2ConstPtr input) {
@@ -36,17 +34,17 @@ void LineExtractorNode::pclCallBack(const sensor_msgs::PointCloud2ConstPtr input
 }
 
 void LineExtractorNode::extractLines() {
-//TODO: call line extractor to actually extract lines
-
-    //dummy message type and data
-//    std_msgs::Float32 msg;
-//    msg.data = 9.9;
-//    publisher.publish(msg);
-    std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters = this->dbscasn.findClusters(this->pclPtr);
-    std::vector<Eigen::VectorXf> lines = regression.getLinesOfBestFit(clusters, 3);
+    this->dbscan.setRadius(80);
+    this->dbscan.setMinNeighbours(1);
+    this->clusters = this->dbscan.findClusters(this->pclPtr);
+    //TODO: change degree of polynomial with a variable
+    std::vector<Eigen::VectorXf> lines = regression.getLinesOfBestFit(this->clusters, 3);
 
     std::vector<mapping_igvc::LineObstacle> lineObstacles = vectorsToMsgs(lines);
-    publisher.publish(lineObstacles[0]);
+
+    for( unsigned int i = 0; i < lineObstacles.size(); i++ ) {
+        publisher.publish(lineObstacles[i]);
+    }
 
     return;
 }
@@ -55,18 +53,45 @@ std::vector<mapping_igvc::LineObstacle> LineExtractorNode::vectorsToMsgs(std::ve
     std::vector<mapping_igvc::LineObstacle> msgs;
 
     for( unsigned int i = 0; i < vectors.size(); i++ ) {
-        msgs.push_back( vectorToLineObstacle(vectors[i]) );
+        msgs.push_back( vectorToLineObstacle(vectors[i], i) );
     }
 
     return msgs;
 }
 
-mapping_igvc::LineObstacle LineExtractorNode::vectorToLineObstacle(Eigen::VectorXf v) {
+mapping_igvc::LineObstacle LineExtractorNode::vectorToLineObstacle(Eigen::VectorXf v, unsigned int clusterIndex) {
     mapping_igvc::LineObstacle lineObstacle = mapping_igvc::LineObstacle();
 
     for( unsigned int i = 0; i < v.size(); i++ ) {
         lineObstacle.coefficients.push_back( v(i) );
     }
 
+    getClusterXRange(lineObstacle.x_min, lineObstacle.x_max, clusterIndex);
+
     return lineObstacle;
+}
+
+void LineExtractorNode::getClusterXRange(double &xmin, double &xmax, unsigned int clusterIndex) {
+    pcl::PointCloud<pcl::PointXYZ> cluster = this->clusters[clusterIndex];
+
+    double min, max;
+
+    if( cluster.size() ) {
+        min = max = cluster[0].x;
+    } else {
+        xmin = xmax = -1;
+        return;
+    }
+
+    for( unsigned int i = 0; i < cluster.size(); i++ ) {
+        if( cluster[i].x < min ) {
+            min = cluster[i].x;
+        }
+        if( cluster[i].x > max ) {
+            max = cluster[i].x;
+        }
+    }
+
+    xmin = min;
+    xmax = max;
 }
