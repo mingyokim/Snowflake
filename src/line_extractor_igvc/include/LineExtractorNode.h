@@ -43,9 +43,27 @@ private:
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr;
 
     void pclCallBack(const sensor_msgs::PointCloud2ConstPtr input);
+
+    /*
+     * Convert a list of vectors to a list of LineObstacle message
+     */
     std::vector<mapping_igvc::LineObstacle> vectorsToMsgs(std::vector<Eigen::VectorXf> vectors);
+
+    /*
+     * Convert a vector to LineObstacle message
+     */
     mapping_igvc::LineObstacle vectorToLineObstacle(Eigen::VectorXf vector, unsigned int clusterIndex);
+
+    /*
+     * Get the minimum and maximum value of x value of all points in a cluster
+     * @clusterIndex: the index of cluster of interest in @clusters
+     */
     void getClusterXRange(double &xmin, double &xmax, unsigned int clusterIndex);
+
+    /*
+     * Checks whether or not all the params we are getting from NodeHandler are valid
+     * params being checked: degree_polynomial, lambda, min_neighbours, radius
+     */
     bool areParamsInvalid();
 };
 
