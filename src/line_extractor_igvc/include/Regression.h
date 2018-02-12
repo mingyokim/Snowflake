@@ -9,26 +9,33 @@
 #define PROJECT_REGRESSION_H
 
 #include <Eigen/Dense>
-#include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
 
 using namespace Eigen;
 using namespace std;
 using namespace pcl;
 
 class Regression {
-public:
+  public:
     /*
      * Returns a std::vector of Eigen::VectorXf
-     * Each Eigen::VectorXf corresponds to the line of best fit of a PointCloud<PointXYZ> cluster
-     * The corresponding vector and cluster have the same index within each of their vectors.
+     * Each Eigen::VectorXf corresponds to the line of best fit of a
+     * PointCloud<PointXYZ> cluster
+     * The corresponding vector and cluster have the same index within each of
+     * their vectors.
      * @polyDegree: Degree of polynomial of the line of best fit
      * @lambda: Regularization parameter
      */
-    static vector<VectorXf> getLinesOfBestFit(vector<PointCloud<PointXYZ>> clusters, unsigned int polyDegree, float lambda=0);
-private:
-    static VectorXf getLineOfCluster(PointCloud<PointXYZ> cluster, unsigned int polyDegree, float lambda=0);
+    static vector<VectorXf>
+    getLinesOfBestFit(vector<PointCloud<PointXYZ>> clusters,
+                      unsigned int polyDegree,
+                      float lambda = 0);
+
+  private:
+    static VectorXf getLineOfCluster(PointCloud<PointXYZ> cluster,
+                                     unsigned int polyDegree,
+                                     float lambda = 0);
 };
 
-
-#endif //PROJECT_REGRESSION_H
+#endif // PROJECT_REGRESSION_H

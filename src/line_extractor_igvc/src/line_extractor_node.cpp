@@ -6,7 +6,7 @@
 
 #include <LineExtractorNode.h>
 
-int main(int argc, char **argv){
+int main(int argc, char** argv) {
     // Set up ROS node
     std::string node_name = "line_extractor_node";
 
