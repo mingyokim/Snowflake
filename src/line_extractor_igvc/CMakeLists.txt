@@ -11,6 +11,7 @@ add_compile_options(-std=c++14)
 find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
+        pcl_conversions
 )
 find_package(sb_utils REQUIRED)
 find_package(mapping_igvc REQUIRED)
@@ -126,6 +127,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
         ${sb_utils_INCLUDE_DIRS}
         ${mapping_igvc_INCLUDE_DIRS}
+        ${pcl_conversions_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -156,7 +158,7 @@ include_directories(
 ## Specify libraries to link a library or executable target against
  target_link_libraries(line_extractor_node
    ${catkin_LIBRARIES} ${sb_utils_LIBRARIES} ${mapping_igvc_LIBRARIES}
-         ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES}
+         ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${pcl_conversions_LIBRARIES}
  )
 
 #############
