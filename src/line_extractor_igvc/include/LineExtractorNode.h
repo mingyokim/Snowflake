@@ -4,8 +4,8 @@
  * Description: Header file for Line Extractor Node
  */
 
-#ifndef PROJECT_LINEEXTRACTOR_H
-#define PROJECT_LINEEXTRACTOR_H
+#ifndef LINE_EXTRACTOR_IGVC_NODE_H
+#define LINE_EXTRACTOR_IGVC_NODE_H
 
 #include "DBSCAN.h"
 #include "Regression.h"

@@ -5,8 +5,8 @@
  *              line of best fit for each cluster of points
  */
 
-#ifndef PROJECT_REGRESSION_H
-#define PROJECT_REGRESSION_H
+#ifndef LINE_EXTRACTOR_IGVC_REGRESSION_H
+#define LINE_EXTRACTOR_IGVC_REGRESSION_H
 
 #include <Eigen/Dense>
 #include <pcl/point_cloud.h>

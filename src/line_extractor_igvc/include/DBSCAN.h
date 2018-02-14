@@ -4,8 +4,8 @@
  * Description: Class declaration for DBSCAN (Density-based clustering)
  */
 
-#ifndef PROJECT_DBSCAN_H
-#define PROJECT_DBSCAN_H
+#ifndef LINE_EXTRACTOR_IGVC_DBSCAN_H
+#define LINE_EXTRACTOR_IGVC_DBSCAN_H
 
 #include <pcl/PCLPointCloud2.h>
 #include <pcl/conversions.h>
