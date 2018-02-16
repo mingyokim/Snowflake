@@ -25,14 +25,9 @@
 class LineExtractorRosTest : public testing::Test {
   protected:
     virtual void SetUp() {
-        //        nh_.setParam("line_extractor/degree_polynomial", 3);
-        //        nh_.setParam("line_extractor/lambda", 0);
-        //        nh_.setParam("line_extractor/min_neighbours", 1);
-        //        nh_.setParam("line_extractor/radius", 80);
-
-        test_publisher = nh_.advertise<sensor_msgs::PointCloud2>("/pcl", 1);
+        test_publisher = nh_.advertise<sensor_msgs::PointCloud2>("/input_pointcloud", 1);
         test_subscriber =
-        nh_.subscribe("/lines", 1, &LineExtractorRosTest::callback, this);
+        nh_.subscribe("/line_extractor_node/output_line_obstacle", 1, &LineExtractorRosTest::callback, this);
 
         // Let the publishers and subscribers set itself up timely
         ros::Rate loop_rate(1);

@@ -10,6 +10,7 @@ vector<VectorXf> Regression::getLinesOfBestFit(
 vector<PointCloud<PointXYZ>> clusters, unsigned int polyDegree, float lambda) {
     vector<VectorXf> lines;
 
+    // Calculate line of best fit for each cluster
     for (unsigned int i = 0; i < clusters.size(); i++) {
         lines.push_back(getLineOfCluster(clusters[i], polyDegree, lambda));
     }
@@ -50,14 +51,7 @@ VectorXf Regression::getLineOfCluster(PointCloud<PointXYZ> cluster,
     for (unsigned int i = 0; i < cluster.size(); i++) {
         PointXYZ point = cluster[i];
 
-        VectorXf row(polyDegree + 1);
-        row(0) = 1;
-
-        for (unsigned int j = 1; j < polyDegree + 1; j++) {
-            row(j) = pow(point.x, j);
-        }
-
-        X.row(i) = row;
+        X.row(i) = constructRow(point.x, polyDegree);
 
         y(i) = point.y;
     }
@@ -73,4 +67,18 @@ VectorXf Regression::getLineOfCluster(PointCloud<PointXYZ> cluster,
     line = (left).ldlt().solve(right);
 
     return line;
+}
+
+VectorXf Regression::constructRow(float x, unsigned int polyDegree) {
+    VectorXf row(polyDegree + 1);
+
+    // linear bias
+    row(0) = 1;
+
+    // non-linear
+    for (unsigned int j = 1; j < polyDegree + 1; j++) {
+        row(j) = pow(x, j);
+    }
+
+    return row;
 }

@@ -11,39 +11,35 @@ LineExtractorNode::LineExtractorNode(int argc,
                                      std::string node_name) {
     ros::init(argc, argv, node_name);
     ros::NodeHandle nh;
+    ros::NodeHandle private_nh("~");
 
-    // TODO: change defaults
-    std::string degree_polynomial_param = "line_extractor/degree_polynomial";
+    std::string degree_polynomial_param = "degree_polynomial";
     int default_degree_polynomial       = 3;
-    SB_getParam(
-    nh, degree_polynomial_param, this->degreePoly, default_degree_polynomial);
+    SB_getParam(private_nh, degree_polynomial_param, this->degreePoly, default_degree_polynomial);
 
-    std::string lambda_param = "line_extractor/lambda";
+    std::string lambda_param = "lambda";
     float default_lambda     = 0;
-    SB_getParam(nh, lambda_param, this->lambda, default_lambda);
+    SB_getParam(private_nh, lambda_param, this->lambda, default_lambda);
 
-    std::string min_neighbours_param = "line_extractor/min_neighbours";
+    std::string min_neighbours_param = "min_neighbours";
     int default_min_neighbours       = 1;
-    SB_getParam(
-    nh, min_neighbours_param, this->minNeighbours, default_min_neighbours);
+    SB_getParam(private_nh, min_neighbours_param, this->minNeighbours, default_min_neighbours);
 
-    std::string radius_param = "line_extractor/radius";
+    std::string radius_param = "radius";
     float default_radius     = 80;
-    SB_getParam(nh, radius_param, this->radius, default_radius);
+    SB_getParam(private_nh, radius_param, this->radius, default_radius);
 
     if (areParamsInvalid()) { ros::shutdown(); }
 
-    // TODO: change subscriber topic name when it's determined
-    std::string topic_to_subscribe_to = "/pcl"; // dummy topic name
+    std::string topic_to_subscribe_to = "input_pointcloud"; // dummy topic name
     int refresh_rate                  = 10;
     subscriber                        = nh.subscribe(
     topic_to_subscribe_to, refresh_rate, &LineExtractorNode::pclCallBack, this);
 
-    // TODO: change publisher topic name when it's determined
-    std::string topic_to_publish_to = "/lines"; // dummy topic name
+    std::string topic_to_publish_to = "output_line_obstacle"; // dummy topic name
     uint32_t queue_size             = 1;
     publisher =
-    nh.advertise<mapping_igvc::LineObstacle>(topic_to_publish_to, queue_size);
+    private_nh.advertise<mapping_igvc::LineObstacle>(topic_to_publish_to, queue_size);
 
     this->dbscan.setRadius(this->radius);
     this->dbscan.setMinNeighbours(this->minNeighbours);
@@ -52,12 +48,22 @@ LineExtractorNode::LineExtractorNode(int argc,
 void LineExtractorNode::pclCallBack(
 const sensor_msgs::PointCloud2ConstPtr input) {
     pcl::PCLPointCloud2 pcl_pc2;
+
+    // convert sensor_msgs::PointCloud2 to pcl::PCLPointCloud2
     pcl_conversions::toPCL(*input, pcl_pc2);
+
     pcl::PointCloud<pcl::PointXYZ>::Ptr temp_cloud(
     new pcl::PointCloud<pcl::PointXYZ>);
+
+    // convert pcl::PointCloud2 to pcl::PointCloud<pcl::PointXYZ>
     pcl::fromPCLPointCloud2(pcl_pc2, *temp_cloud);
+
+    // store converted pointcloud for use
     this->pclPtr = temp_cloud;
+
+    // extract lines from the pointcloud
     extractLines();
+
     return;
 }
 

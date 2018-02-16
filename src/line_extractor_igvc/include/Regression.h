@@ -25,7 +25,7 @@ class Regression {
      * The corresponding vector and cluster have the same index within each of
      * their vectors.
      * @polyDegree: Degree of polynomial of the line of best fit
-     * @lambda: Regularization parameter
+     * @lambda: Regularization parameter (Default: 0)
      */
     static vector<VectorXf>
     getLinesOfBestFit(vector<PointCloud<PointXYZ>> clusters,
@@ -33,9 +33,17 @@ class Regression {
                       float lambda = 0);
 
   private:
+    /*
+     * Returns a line of best given a cluster
+     */
     static VectorXf getLineOfCluster(PointCloud<PointXYZ> cluster,
                                      unsigned int polyDegree,
                                      float lambda = 0);
+
+    /*
+     * Constructs a row in the matrix X given a data point and degree of polynomial
+     */
+    static VectorXf constructRow(float x, unsigned int polyDegree);
 };
 
 #endif // PROJECT_REGRESSION_H
