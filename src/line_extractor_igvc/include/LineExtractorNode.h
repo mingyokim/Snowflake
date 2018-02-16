@@ -22,6 +22,9 @@
 
 class LineExtractorNode {
   public:
+    /*
+     * @clusters stores the output from DBSCAN
+     */
     std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
 
     LineExtractorNode(int argc, char** argv, std::string node_name);
@@ -33,16 +36,55 @@ class LineExtractorNode {
     ros::Subscriber subscriber;
     ros::Publisher publisher;
 
+    /*
+     * @dbscan takes in a PointCloud and clusters them into a vector of PointClouds
+     */
     DBSCAN dbscan;
+
+    /*
+     * @regression takes in the output from @dbscan and outputs a LineObstacle for each cluster.
+     * A line has the same index as its corresponding cluster
+     * (line of clusters[i] is lines[i])
+     */
     Regression regression;
 
+    /*
+     * @degreePoly is a hyperparameter to regression that determines
+     * the degree of polynomial of the line of best fit
+     */
     int degreePoly;
+
+    /*
+     * @lmabda is a hyperparameter to regression that determines
+     * the strength of regularization
+     */
     float lambda;
+
+    /*
+     * @minNeighbours is a hyperparameter to DBSCAN that determines
+     * how many neighbours are required for a point to be considered
+     * a 'core' point
+     */
     int minNeighbours;
+
+    /*
+     * @radius is a hyperparameter to DBSCAN that determines
+     * how close the points have to be together in order for them to
+     * be considered as 'core' points
+     */
     float radius;
 
+    /*
+     * @pclPtr stores the pointer to the PCL PointCloud after it has
+     * been converted from sensor_msgs PointCloud2
+     */
     pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr;
 
+    /*
+     * The callback function is called whenever the node receives a
+     * PointCloud message. It converts sensor_msgs PointCloud2 pointer
+     * to PCL PointCloud pointer and then extracts lines from the PointCloud
+     */
     void pclCallBack(const sensor_msgs::PointCloud2ConstPtr input);
 
     /*
