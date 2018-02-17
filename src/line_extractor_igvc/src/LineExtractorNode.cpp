@@ -22,11 +22,11 @@ LineExtractorNode::LineExtractorNode(int argc,
     SB_getParam(private_nh, lambda_param, this->lambda, default_lambda);
 
     std::string min_neighbours_param = "min_neighbours";
-    int default_min_neighbours       = 1;
+    int default_min_neighbours       = 3;
     SB_getParam(private_nh, min_neighbours_param, this->minNeighbours, default_min_neighbours);
 
     std::string radius_param = "radius";
-    float default_radius     = 80;
+    float default_radius     = 0.1;
     SB_getParam(private_nh, radius_param, this->radius, default_radius);
 
     if (areParamsInvalid()) { ros::shutdown(); }
