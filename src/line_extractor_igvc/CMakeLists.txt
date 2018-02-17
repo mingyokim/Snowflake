@@ -61,14 +61,14 @@ add_executable(line_extractor_node
 if (CATKIN_ENABLE_TESTING)
 
     # Adding gtests to the package
-    catkin_add_gtest(DBSCAN-test test/DBSCAN-test.cpp src/DBSCAN.cpp)
+    catkin_add_gtest(DBSCAN-test test/DBSCAN-test.cpp src/DBSCAN.cpp test/TestUtils.h)
     target_link_libraries(DBSCAN-test ${catkin_LIBRARIES})
 
-    catkin_add_gtest(Regression-test test/Regression-test.cpp src/Regression.cpp)
+    catkin_add_gtest(Regression-test test/Regression-class-test.cpp src/Regression.cpp test/TestUtils.h)
     target_link_libraries(Regression-test ${catkin_LIBRARIES})
 
     # Adding rostest to the package
     find_package(rostest REQUIRED)
-    add_rostest_gtest(line_extractor_rostest test/line_extractor_test.test test/line_extractor_rostest.cpp src/DBSCAN.cpp src/Regression.cpp)
+    add_rostest_gtest(line_extractor_rostest test/line_extractor_test.test test/line_extractor_rostest.cpp src/DBSCAN.cpp src/Regression.cpp test/TestUtils.h)
     target_link_libraries(line_extractor_rostest ${catkin_LIBRARIES})
 endif()
