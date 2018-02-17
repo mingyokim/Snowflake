@@ -7,8 +7,7 @@
 #include <gtest/gtest.h>
 #include <mapping_igvc/LineObstacle.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include <ros/ros.h>
-#include <sensor_msgs/PointCloud2.h>
+#include "./TestUtils.h"
 #include <std_msgs/Float32.h>
 
 /**
@@ -46,29 +45,20 @@ class LineExtractorRosTest : public testing::Test {
 };
 
 TEST_F(LineExtractorRosTest, getAngularVel) {
+    float x_min = 0;
+    float x_max = 99;
+    float x_delta = 1;
+
+    // coefficients is the same as the one in LineObstacle message
+    std::vector<float> coefficients = {1000, 7, -0.7, 0.007};
+    LineExtractor::TestUtils::LineArgs args(coefficients, x_min, x_max, x_delta);
+
+    float max_noise_x = 1;
+    float max_noise_y = 1;
+
+    // Generate a single PointCloud with noise
     pcl::PointCloud<pcl::PointXYZ> pcl;
-
-    int y1   = 1000;
-    float m1 = 7;
-    float m2 = -0.7;
-    float m3 = 0.007;
-
-    int num_points = 100;
-    for (float x = 0; x < num_points; x++) {
-        float true_y = m1 * x + m2 * pow(x, 2) + m3 * pow(x, 3) + y1;
-        float true_x = x;
-
-        float noise_y = ((float) rand() / (RAND_MAX)) * 2 - 1;
-        float noise_x = ((float) rand() / (RAND_MAX)) * 2 - 1;
-
-        float deformed_y = true_y + noise_y;
-        float deformed_x = true_x + noise_x;
-
-        pcl::PointXYZ p;
-        p.x = deformed_x;
-        p.y = deformed_y;
-        pcl.push_back(p);
-    }
+    LineExtractor::TestUtils::addLineToPointCloud(args, pcl, max_noise_x, max_noise_y);
 
     sensor_msgs::PointCloud2 msg;
     pcl::toROSMsg(pcl, msg);
@@ -84,13 +74,29 @@ TEST_F(LineExtractorRosTest, getAngularVel) {
     // http://answers.ros.org/question/11887/significance-of-rosspinonce/
     ros::spinOnce();
 
-    ASSERT_EQ(lineObstacle.coefficients.size(), 4);
-    EXPECT_NEAR(lineObstacle.coefficients[0], y1, 10);
-    EXPECT_NEAR(lineObstacle.coefficients[1], m1, 5);
-    EXPECT_NEAR(lineObstacle.coefficients[2], m2, 5);
-    EXPECT_NEAR(lineObstacle.coefficients[3], m3, 5);
-    EXPECT_NEAR(lineObstacle.x_min, 0, 1);
-    EXPECT_NEAR(lineObstacle.x_max, 99, 1);
+    ASSERT_EQ(lineObstacle.coefficients.size(), coefficients.size());
+
+    for (unsigned int i = 0; i < lineObstacle.coefficients.size(); i++ ) {
+        float tol;
+
+        // logic to allow more tolerance for y-intercept
+        if( i ) {
+            tol = 5;
+        } else {
+            tol = 10;
+        }
+
+        EXPECT_NEAR(lineObstacle.coefficients[i], coefficients[i], tol);
+    }
+
+    EXPECT_NEAR(lineObstacle.x_min, x_min, 1);
+    EXPECT_NEAR(lineObstacle.x_max, x_max, 1);
+
+    float true_min, true_max;
+    LineExtractor::TestUtils::getMinAndMaxOfPointCloud(true_min, true_max, pcl);
+
+    EXPECT_FLOAT_EQ(lineObstacle.x_min, true_min);
+    EXPECT_FLOAT_EQ(lineObstacle.x_max, true_max);
 }
 
 int main(int argc, char** argv) {

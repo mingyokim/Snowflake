@@ -14,11 +14,11 @@ namespace LineExtractor {
     class TestUtils {
     public:
         struct LineArgs {
-            vector<float> coefficients;
+            std::vector<float> coefficients;
             float x_min;
             float x_max;
             float x_delta;
-            LineArgs(vector<float> coefficients, float x_min, float x_max, float x_delta) :
+            LineArgs(std::vector<float> coefficients, float x_min, float x_max, float x_delta) :
                     coefficients(coefficients), x_min(x_min), x_max(x_max), x_delta(x_delta) {};
         };
 
