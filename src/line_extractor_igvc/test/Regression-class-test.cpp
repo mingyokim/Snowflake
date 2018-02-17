@@ -19,7 +19,8 @@ TEST(Regression, OnePerfectLinearFit) {
     LineExtractor::TestUtils::LineArgs args(coefficients, x_min, x_max, x_delta);
 
     // Generate a single PointCloud
-    pcl::PointCloud<pcl::PointXYZ> pcl = LineExtractor::TestUtils::generatePointCloud(args);
+    pcl::PointCloud<pcl::PointXYZ> pcl;
+    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
     // Perform Regression
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
@@ -57,7 +58,8 @@ TEST(Regression, MultiplePerfectLinearFits) {
 
     for (unsigned int i = 0; i < num_lines; i++) {
         LineExtractor::TestUtils::LineArgs args(coefficients_per_line[i], x_min, x_max, x_delta);
-        pcl::PointCloud<pcl::PointXYZ> pcl = LineExtractor::TestUtils::generatePointCloud(args);
+        pcl::PointCloud<pcl::PointXYZ> pcl;
+        LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
         clusters.push_back(pcl);
     }
@@ -88,7 +90,8 @@ TEST(Regression, OnePerfectNonLinearFit) {
     LineExtractor::TestUtils::LineArgs args(coefficients, x_min, x_max, x_delta);
 
     // Generate PointCloud
-    pcl::PointCloud<pcl::PointXYZ> pcl = LineExtractor::TestUtils::generatePointCloud(args);
+    pcl::PointCloud<pcl::PointXYZ> pcl;
+    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
     // Perform Regression
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
@@ -122,7 +125,8 @@ TEST(Regression, OneNonLinearFitWithNoise) {
     float max_noise_y = 1;
 
     // Generate a single PointCloud with noise
-    pcl::PointCloud<pcl::PointXYZ> pcl = LineExtractor::TestUtils::generatePointCloud(args, max_noise_x, max_noise_y);
+    pcl::PointCloud<pcl::PointXYZ> pcl;
+    LineExtractor::TestUtils::addLineToPointCloud(args, pcl, max_noise_x, max_noise_y);
 
     // Perform Regression
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters;

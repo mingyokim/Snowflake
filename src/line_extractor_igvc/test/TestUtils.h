@@ -22,9 +22,7 @@ namespace LineExtractor {
                     coefficients(coefficients), x_min(x_min), x_max(x_max), x_delta(x_delta) {};
         };
 
-        static pcl::PointCloud<pcl::PointXYZ> generatePointCloud(LineArgs args) {
-            pcl::PointCloud<pcl::PointXYZ> pcl;
-
+        static void addLineToPointCloud(LineArgs args, pcl::PointCloud<pcl::PointXYZ> &pcl) {
             for( float x = args.x_min; x <= args.x_max; x += args.x_delta) {
                 pcl::PointXYZ p;
                 p.x = x;
@@ -36,13 +34,9 @@ namespace LineExtractor {
 
                 pcl.push_back(p);
             }
-
-            return pcl;
         };
 
-        static pcl::PointCloud<pcl::PointXYZ> generatePointCloud(LineArgs args, float max_noise_x, float max_noise_y) {
-            pcl::PointCloud<pcl::PointXYZ> pcl;
-
+        static void addLineToPointCloud(LineArgs args, pcl::PointCloud<pcl::PointXYZ> &pcl, float max_noise_x, float max_noise_y) {
             for( float x = args.x_min; x <= args.x_max; x += args.x_delta) {
                 float true_x = x;
                 float true_y = 0;
@@ -60,9 +54,30 @@ namespace LineExtractor {
                 pcl::PointXYZ p(deformed_x, deformed_y, 0);
                 pcl.push_back(p);
             }
-
-            return pcl;
         };
+
+        unsigned int static getNumPoints(LineArgs args) {
+            return (args.x_max - args.x_min) / args.x_delta + 1;
+        }
+
+        static void getMinAndMaxOfPointCloud(float &min_x, float &max_x, pcl::PointCloud<pcl::PointXYZ> pcl) {
+            double min, max;
+
+            if (pcl.size()) {
+                min = max = pcl[0].x;
+            } else {
+                min_x = max_x = -1;
+                return;
+            }
+
+            for (unsigned int i = 0; i < pcl.size(); i++) {
+                if (pcl[i].x < min) { min = pcl[i].x; }
+                if (pcl[i].x > max) { max = pcl[i].x; }
+            }
+
+            min_x = min;
+            max_x = max;
+        }
     };
 }
 
