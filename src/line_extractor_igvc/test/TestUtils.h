@@ -9,6 +9,7 @@
 
 #include <pcl/PCLPointCloud2.h>
 #include <pcl/point_types.h>
+#include <pcl/point_cloud.h>
 
 namespace LineExtractor {
 class TestUtils {
@@ -47,6 +48,7 @@ class TestUtils {
                                     pcl::PointCloud<pcl::PointXYZ>& pcl,
                                     float max_noise_x,
                                     float max_noise_y) {
+        srand(123);
         for (float x = args.x_min; x <= args.x_max; x += args.x_delta) {
             float true_x = x;
             float true_y = 0;
