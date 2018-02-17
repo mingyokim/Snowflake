@@ -8,8 +8,8 @@
 #define LINE_EXTRACTOR_IGVC_TESTUTILS_H
 
 #include <pcl/PCLPointCloud2.h>
-#include <pcl/point_types.h>
 #include <pcl/point_cloud.h>
+#include <pcl/point_types.h>
 
 namespace LineExtractor {
 class TestUtils {
