@@ -4,19 +4,20 @@
  * Description: Tests calculation of line of best fit
  */
 
+#include "./TestUtils.h"
 #include <Regression.h>
 #include <gtest/gtest.h>
-#include "./TestUtils.h"
 
 TEST(Regression, OnePerfectLinearFit) {
     // Setup PointCloud parameters
     unsigned int polyDegree = 1;
 
-    float x_min = 0;
-    float x_max = 99;
-    float x_delta = 1;
+    float x_min                = 0;
+    float x_max                = 99;
+    float x_delta              = 1;
     vector<float> coefficients = {100, 1};
-    LineExtractor::TestUtils::LineArgs args(coefficients, x_min, x_max, x_delta);
+    LineExtractor::TestUtils::LineArgs args(
+    coefficients, x_min, x_max, x_delta);
 
     // Generate a single PointCloud
     pcl::PointCloud<pcl::PointXYZ> pcl;
@@ -31,9 +32,9 @@ TEST(Regression, OnePerfectLinearFit) {
 
     // Check results
     ASSERT_EQ(lines.size(), 1);
-    ASSERT_EQ(lines[0].size(),coefficients.size());
+    ASSERT_EQ(lines[0].size(), coefficients.size());
 
-    for( unsigned int i = 0; i < coefficients.size(); i++ ) {
+    for (unsigned int i = 0; i < coefficients.size(); i++) {
         EXPECT_FLOAT_EQ(lines[0](i), coefficients[i]);
     }
 }
@@ -42,22 +43,20 @@ TEST(Regression, MultiplePerfectLinearFits) {
     // Setup PointCloud parameters
     unsigned int polyDegree = 1;
 
-    float x_min = 0;
-    float x_max = 999;
-    float x_delta = 0.1;
+    float x_min                                 = 0;
+    float x_max                                 = 999;
+    float x_delta                               = 0.1;
     vector<vector<float>> coefficients_per_line = {
-            {5, -2},
-            {10, 7},
-            {-99, -10}
-    };
+    {5, -2}, {10, 7}, {-99, -10}};
 
-    unsigned int num_lines  = coefficients_per_line.size();
+    unsigned int num_lines = coefficients_per_line.size();
 
     // Generate multiple PointClouds
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
 
     for (unsigned int i = 0; i < num_lines; i++) {
-        LineExtractor::TestUtils::LineArgs args(coefficients_per_line[i], x_min, x_max, x_delta);
+        LineExtractor::TestUtils::LineArgs args(
+        coefficients_per_line[i], x_min, x_max, x_delta);
         pcl::PointCloud<pcl::PointXYZ> pcl;
         LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
@@ -83,11 +82,12 @@ TEST(Regression, OnePerfectNonLinearFit) {
     // Setup PointCloud paramters
     unsigned int polyDegree = 3;
 
-    float x_min = 0;
-    float x_max = 99;
-    float x_delta = 1;
+    float x_min                = 0;
+    float x_max                = 99;
+    float x_delta              = 1;
     vector<float> coefficients = {100, 7, -0.7, 0.007};
-    LineExtractor::TestUtils::LineArgs args(coefficients, x_min, x_max, x_delta);
+    LineExtractor::TestUtils::LineArgs args(
+    coefficients, x_min, x_max, x_delta);
 
     // Generate PointCloud
     pcl::PointCloud<pcl::PointXYZ> pcl;
@@ -106,7 +106,7 @@ TEST(Regression, OnePerfectNonLinearFit) {
 
     ASSERT_EQ(line.size(), coefficients.size());
 
-    for (unsigned int i = 0; i < line.size(); i++ ) {
+    for (unsigned int i = 0; i < line.size(); i++) {
         EXPECT_NEAR(line(i), coefficients[i], 1);
     }
 }
@@ -115,18 +115,20 @@ TEST(Regression, OneNonLinearFitWithNoise) {
     // Setup PointCloud parameters
     unsigned int polyDegree = 3;
 
-    float x_min = 0;
-    float x_max = 99;
-    float x_delta = 1;
+    float x_min                = 0;
+    float x_max                = 99;
+    float x_delta              = 1;
     vector<float> coefficients = {1000, 7, -0.7, 0.007};
-    LineExtractor::TestUtils::LineArgs args(coefficients, x_min, x_max, x_delta);
+    LineExtractor::TestUtils::LineArgs args(
+    coefficients, x_min, x_max, x_delta);
 
     float max_noise_x = 1;
     float max_noise_y = 1;
 
     // Generate a single PointCloud with noise
     pcl::PointCloud<pcl::PointXYZ> pcl;
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl, max_noise_x, max_noise_y);
+    LineExtractor::TestUtils::addLineToPointCloud(
+    args, pcl, max_noise_x, max_noise_y);
 
     // Perform Regression
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
@@ -141,11 +143,11 @@ TEST(Regression, OneNonLinearFitWithNoise) {
 
     ASSERT_EQ(line.size(), coefficients.size());
 
-    for (unsigned int i = 0; i < line.size(); i++ ) {
+    for (unsigned int i = 0; i < line.size(); i++) {
         float tol;
 
         // logic to allow more tolerance for y-intercept
-        if( i ) {
+        if (i) {
             tol = 5;
         } else {
             tol = 10;

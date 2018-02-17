@@ -15,7 +15,10 @@ LineExtractorNode::LineExtractorNode(int argc,
 
     std::string degree_polynomial_param = "degree_polynomial";
     int default_degree_polynomial       = 3;
-    SB_getParam(private_nh, degree_polynomial_param, this->degreePoly, default_degree_polynomial);
+    SB_getParam(private_nh,
+                degree_polynomial_param,
+                this->degreePoly,
+                default_degree_polynomial);
 
     std::string lambda_param = "lambda";
     float default_lambda     = 0;
@@ -23,7 +26,10 @@ LineExtractorNode::LineExtractorNode(int argc,
 
     std::string min_neighbours_param = "min_neighbours";
     int default_min_neighbours       = 3;
-    SB_getParam(private_nh, min_neighbours_param, this->minNeighbours, default_min_neighbours);
+    SB_getParam(private_nh,
+                min_neighbours_param,
+                this->minNeighbours,
+                default_min_neighbours);
 
     std::string radius_param = "radius";
     float default_radius     = 0.1;
@@ -36,10 +42,11 @@ LineExtractorNode::LineExtractorNode(int argc,
     subscriber                        = nh.subscribe(
     topic_to_subscribe_to, refresh_rate, &LineExtractorNode::pclCallBack, this);
 
-    std::string topic_to_publish_to = "output_line_obstacle"; // dummy topic name
-    uint32_t queue_size             = 1;
-    publisher =
-    private_nh.advertise<mapping_igvc::LineObstacle>(topic_to_publish_to, queue_size);
+    std::string topic_to_publish_to =
+    "output_line_obstacle"; // dummy topic name
+    uint32_t queue_size = 1;
+    publisher           = private_nh.advertise<mapping_igvc::LineObstacle>(
+    topic_to_publish_to, queue_size);
 
     this->dbscan.setRadius(this->radius);
     this->dbscan.setMinNeighbours(this->minNeighbours);

@@ -4,10 +4,10 @@
  * Description: Ros tests for Line Extractor Node
  */
 
+#include "./TestUtils.h"
 #include <gtest/gtest.h>
 #include <mapping_igvc/LineObstacle.h>
 #include <pcl_conversions/pcl_conversions.h>
-#include "./TestUtils.h"
 #include <std_msgs/Float32.h>
 
 /**
@@ -24,9 +24,13 @@
 class LineExtractorRosTest : public testing::Test {
   protected:
     virtual void SetUp() {
-        test_publisher = nh_.advertise<sensor_msgs::PointCloud2>("/input_pointcloud", 1);
+        test_publisher =
+        nh_.advertise<sensor_msgs::PointCloud2>("/input_pointcloud", 1);
         test_subscriber =
-        nh_.subscribe("/line_extractor_node/output_line_obstacle", 1, &LineExtractorRosTest::callback, this);
+        nh_.subscribe("/line_extractor_node/output_line_obstacle",
+                      1,
+                      &LineExtractorRosTest::callback,
+                      this);
 
         // Let the publishers and subscribers set itself up timely
         ros::Rate loop_rate(1);
@@ -45,20 +49,22 @@ class LineExtractorRosTest : public testing::Test {
 };
 
 TEST_F(LineExtractorRosTest, getAngularVel) {
-    float x_min = 0;
-    float x_max = 99;
+    float x_min   = 0;
+    float x_max   = 99;
     float x_delta = 1;
 
     // coefficients is the same as the one in LineObstacle message
     std::vector<float> coefficients = {1000, 7, -0.7, 0.007};
-    LineExtractor::TestUtils::LineArgs args(coefficients, x_min, x_max, x_delta);
+    LineExtractor::TestUtils::LineArgs args(
+    coefficients, x_min, x_max, x_delta);
 
     float max_noise_x = 1;
     float max_noise_y = 1;
 
     // Generate a single PointCloud with noise
     pcl::PointCloud<pcl::PointXYZ> pcl;
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl, max_noise_x, max_noise_y);
+    LineExtractor::TestUtils::addLineToPointCloud(
+    args, pcl, max_noise_x, max_noise_y);
 
     sensor_msgs::PointCloud2 msg;
     pcl::toROSMsg(pcl, msg);
@@ -76,11 +82,11 @@ TEST_F(LineExtractorRosTest, getAngularVel) {
 
     ASSERT_EQ(lineObstacle.coefficients.size(), coefficients.size());
 
-    for (unsigned int i = 0; i < lineObstacle.coefficients.size(); i++ ) {
+    for (unsigned int i = 0; i < lineObstacle.coefficients.size(); i++) {
         float tol;
 
         // logic to allow more tolerance for y-intercept
-        if( i ) {
+        if (i) {
             tol = 5;
         } else {
             tol = 10;

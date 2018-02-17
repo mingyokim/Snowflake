@@ -41,7 +41,8 @@ class Regression {
                                      float lambda = 0);
 
     /*
-     * Constructs a row in the matrix X given a data point and degree of polynomial
+     * Constructs a row in the matrix X given a data point and degree of
+     * polynomial
      */
     static VectorXf constructRow(float x, unsigned int polyDegree);
 };

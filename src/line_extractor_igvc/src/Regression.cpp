@@ -76,9 +76,7 @@ VectorXf Regression::constructRow(float x, unsigned int polyDegree) {
     row(0) = 1;
 
     // non-linear
-    for (unsigned int j = 1; j < polyDegree + 1; j++) {
-        row(j) = pow(x, j);
-    }
+    for (unsigned int j = 1; j < polyDegree + 1; j++) { row(j) = pow(x, j); }
 
     return row;
 }
