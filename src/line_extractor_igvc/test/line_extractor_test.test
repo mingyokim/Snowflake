@@ -1,4 +1,5 @@
-<!-- A .test file which launches the node and its corresponding rostest -->
+<!-- A .test file which launches LineExtractor node and its corresponding rostest -->
+<!-- The param values here are specifically for the rostest -->
 
 <launch>
     <node name="line_extractor_node" pkg="line_extractor_igvc" type="line_extractor_node">
