@@ -35,7 +35,10 @@ LineExtractorNode::LineExtractorNode(int argc,
     float default_radius     = 0.1;
     SB_getParam(private_nh, radius_param, this->radius, default_radius);
 
-    if (areParamsInvalid()) { ros::shutdown(); }
+    if (areParamsInvalid()) {
+        ROS_DEBUG("At least one of your parameters are negative; they should be positive!");
+        ros::shutdown();
+    }
 
     std::string topic_to_subscribe_to = "input_pointcloud"; // dummy topic name
     int refresh_rate                  = 10;
