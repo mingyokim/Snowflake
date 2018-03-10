@@ -87,7 +87,7 @@ class LineExtractorNode {
      * PointCloud message. It converts sensor_msgs PointCloud2 pointer
      * to PCL PointCloud pointer and then extracts lines from the PointCloud
      */
-    void pclCallBack(const sensor_msgs::PointCloud2ConstPtr input);
+    void pclCallBack(const sensor_msgs::PointCloud2ConstPtr processed_pcl);
 
     /*
      * Convert a list of vectors to a list of LineObstacle message

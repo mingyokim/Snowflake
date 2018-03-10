@@ -48,7 +48,7 @@ class LineExtractorRosTest : public testing::Test {
     }
 };
 
-TEST_F(LineExtractorRosTest, getAngularVel) {
+TEST_F(LineExtractorRosTest, TestTwoNonLinearLinesWithNoise) {
     float x_min   = 0;
     float x_max   = 99;
     float x_delta = 1;
