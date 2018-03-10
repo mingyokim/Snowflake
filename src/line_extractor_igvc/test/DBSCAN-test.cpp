@@ -26,10 +26,10 @@ TEST(DBSCAN, ClusterTwoNearPoints) {
     p2.y = 1.1;
     pcl.push_back(p2);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(1, clusters.size());
     ASSERT_EQ(2, clusters[0].size());
 
@@ -59,10 +59,10 @@ TEST(DBSCAN, TestClusterTwoFarPoints) {
     p3.y = 10;
     pcl.push_back(p3);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     EXPECT_EQ(0, clusters.size());
 }
 
@@ -88,10 +88,10 @@ TEST(DBSCAN, TestExpandCluster) {
     p3.y = 1;
     pcl.push_back(p3);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(1, clusters.size());
     EXPECT_EQ(3, clusters[0].size());
 }
@@ -117,10 +117,10 @@ TEST(DBSCAN, TestClusterTwoShortHorizontalLines) {
     args.coefficients = {-10};
     LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
     EXPECT_EQ(4, clusters[0].size());
     EXPECT_EQ(4, clusters[1].size());
@@ -147,10 +147,10 @@ TEST(DBSCAN, TestClusterTwoSlopedLines) {
     args.coefficients = {-100, 1};
     LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
@@ -181,10 +181,10 @@ TEST(DBSCAN, TestClusterTwoSlopedLinesWithOutliers) {
     pcl.push_back(pcl::PointXYZ(999999, 999999, 0));
     pcl.push_back(pcl::PointXYZ(-999999, -999999, 0));
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
@@ -211,10 +211,10 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines) {
     args.coefficients = {-3};
     LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
@@ -241,10 +241,10 @@ TEST(DBSCAN, TestClusterBorder) {
     args.coefficients = {-3};
     LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
@@ -271,10 +271,10 @@ TEST(DBSCAN, TestClusterTwoPolynomialLines) {
     args.coefficients = {-10, 0, 0, 0.002};
     LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
@@ -300,10 +300,10 @@ TEST(DBSCAN, TestClusterOnePolynomialLinesWithNoise) {
     float true_min, true_max;
     LineExtractor::TestUtils::getMinAndMaxOfPointCloud(true_min, true_max, pcl);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
 
     ASSERT_EQ(clusters.size(), 1);
 
@@ -337,10 +337,10 @@ TEST(DBSCAN, TestClusterTwoPolynomialLinesWithNoise) {
     args.coefficients = {-1000, 7, -0.7, 0.007};
     LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
-    pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr = pcl.makeShared();
+    pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
-    dbscan.findClusters(pclPtr);
+    dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
     EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());

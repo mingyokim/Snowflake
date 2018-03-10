@@ -10,7 +10,7 @@
 
 TEST(Regression, OnePerfectLinearFit) {
     // Setup PointCloud parameters
-    unsigned int polyDegree = 1;
+    unsigned int poly_degree = 1;
 
     float x_min                = 0;
     float x_max                = 99;
@@ -28,7 +28,7 @@ TEST(Regression, OnePerfectLinearFit) {
     clusters.push_back(pcl);
 
     std::vector<Eigen::VectorXf> lines =
-    Regression::getLinesOfBestFit(clusters, polyDegree);
+    Regression::getLinesOfBestFit(clusters, poly_degree);
 
     // Check results
     ASSERT_EQ(lines.size(), 1);
@@ -41,7 +41,7 @@ TEST(Regression, OnePerfectLinearFit) {
 
 TEST(Regression, MultiplePerfectLinearFits) {
     // Setup PointCloud parameters
-    unsigned int polyDegree = 1;
+    unsigned int poly_degree = 1;
 
     float x_min                                 = 0;
     float x_max                                 = 999;
@@ -65,7 +65,7 @@ TEST(Regression, MultiplePerfectLinearFits) {
 
     // Preform Regression
     std::vector<Eigen::VectorXf> lines =
-    Regression::getLinesOfBestFit(clusters, polyDegree, 10);
+    Regression::getLinesOfBestFit(clusters, poly_degree, 10);
 
     // Check results
     for (unsigned int i = 0; i < num_lines; i++) {
@@ -80,7 +80,7 @@ TEST(Regression, MultiplePerfectLinearFits) {
 
 TEST(Regression, OnePerfectNonLinearFit) {
     // Setup PointCloud paramters
-    unsigned int polyDegree = 3;
+    unsigned int poly_degree = 3;
 
     float x_min                = 0;
     float x_max                = 99;
@@ -98,7 +98,7 @@ TEST(Regression, OnePerfectNonLinearFit) {
     clusters.push_back(pcl);
 
     std::vector<Eigen::VectorXf> lines =
-    Regression::getLinesOfBestFit(clusters, polyDegree);
+    Regression::getLinesOfBestFit(clusters, poly_degree);
 
     // Check results
     ASSERT_EQ(lines.size(), 1);
@@ -113,7 +113,7 @@ TEST(Regression, OnePerfectNonLinearFit) {
 
 TEST(Regression, OneNonLinearFitWithNoise) {
     // Setup PointCloud parameters
-    unsigned int polyDegree = 3;
+    unsigned int poly_degree = 3;
 
     float x_min                = 0;
     float x_max                = 99;
@@ -135,7 +135,7 @@ TEST(Regression, OneNonLinearFitWithNoise) {
     clusters.push_back(pcl);
 
     std::vector<Eigen::VectorXf> lines =
-    Regression::getLinesOfBestFit(clusters, polyDegree);
+    Regression::getLinesOfBestFit(clusters, poly_degree);
 
     // Check results
     ASSERT_EQ(lines.size(), 1);
