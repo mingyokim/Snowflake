@@ -12,9 +12,9 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
-using namespace Eigen;
-using namespace std;
-using namespace pcl;
+//using namespace Eigen;
+//using namespace std;
+//using namespace pcl;
 
 class Regression {
   public:
@@ -27,8 +27,8 @@ class Regression {
      * @polyDegree: Degree of polynomial of the line of best fit
      * @lambda: Regularization parameter (Default: 0)
      */
-    static vector<VectorXf>
-    getLinesOfBestFit(vector<PointCloud<PointXYZ>> clusters,
+    static std::vector<Eigen::VectorXf>
+    getLinesOfBestFit(std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters,
                       unsigned int polyDegree,
                       float lambda = 0);
 
@@ -36,7 +36,7 @@ class Regression {
     /*
      * Returns a line of best fit given a cluster
      */
-    static VectorXf getLineOfCluster(PointCloud<PointXYZ> cluster,
+    static Eigen::VectorXf getLineOfCluster(pcl::PointCloud<pcl::PointXYZ> cluster,
                                      unsigned int polyDegree,
                                      float lambda = 0);
 
@@ -44,7 +44,7 @@ class Regression {
      * Constructs a row in the matrix X given a data point and degree of
      * polynomial
      */
-    static VectorXf constructRow(float x, unsigned int polyDegree);
+    static Eigen::VectorXf constructRow(float x, unsigned int polyDegree);
 };
 
 #endif // PROJECT_REGRESSION_H

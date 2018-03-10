@@ -15,7 +15,7 @@ TEST(Regression, OnePerfectLinearFit) {
     float x_min                = 0;
     float x_max                = 99;
     float x_delta              = 1;
-    vector<float> coefficients = {100, 1};
+    std::vector<float> coefficients = {100, 1};
     LineExtractor::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
@@ -24,10 +24,10 @@ TEST(Regression, OnePerfectLinearFit) {
     LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
     // Perform Regression
-    vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
+    std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
     clusters.push_back(pcl);
 
-    vector<VectorXf> lines =
+    std::vector<Eigen::VectorXf> lines =
     Regression::getLinesOfBestFit(clusters, polyDegree);
 
     // Check results
@@ -46,13 +46,13 @@ TEST(Regression, MultiplePerfectLinearFits) {
     float x_min                                 = 0;
     float x_max                                 = 999;
     float x_delta                               = 0.1;
-    vector<vector<float>> coefficients_per_line = {
+    std::vector<std::vector<float>> coefficients_per_line = {
     {5, -2}, {10, 7}, {-99, -10}};
 
     unsigned int num_lines = coefficients_per_line.size();
 
     // Generate multiple PointClouds
-    vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
+    std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
 
     for (unsigned int i = 0; i < num_lines; i++) {
         LineExtractor::TestUtils::LineArgs args(
@@ -64,12 +64,12 @@ TEST(Regression, MultiplePerfectLinearFits) {
     }
 
     // Preform Regression
-    vector<VectorXf> lines =
+    std::vector<Eigen::VectorXf> lines =
     Regression::getLinesOfBestFit(clusters, polyDegree, 10);
 
     // Check results
     for (unsigned int i = 0; i < num_lines; i++) {
-        VectorXf line = lines[i];
+        Eigen::VectorXf line = lines[i];
         ASSERT_EQ(line.size(), coefficients_per_line[i].size());
 
         for (unsigned int j = 0; j < line.size(); j++) {
@@ -85,7 +85,7 @@ TEST(Regression, OnePerfectNonLinearFit) {
     float x_min                = 0;
     float x_max                = 99;
     float x_delta              = 1;
-    vector<float> coefficients = {100, 7, -0.7, 0.007};
+    std::vector<float> coefficients = {100, 7, -0.7, 0.007};
     LineExtractor::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
@@ -94,15 +94,15 @@ TEST(Regression, OnePerfectNonLinearFit) {
     LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
 
     // Perform Regression
-    vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
+    std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
     clusters.push_back(pcl);
 
-    vector<VectorXf> lines =
+    std::vector<Eigen::VectorXf> lines =
     Regression::getLinesOfBestFit(clusters, polyDegree);
 
     // Check results
     ASSERT_EQ(lines.size(), 1);
-    VectorXf line = lines[0];
+    Eigen::VectorXf line = lines[0];
 
     ASSERT_EQ(line.size(), coefficients.size());
 
@@ -118,7 +118,7 @@ TEST(Regression, OneNonLinearFitWithNoise) {
     float x_min                = 0;
     float x_max                = 99;
     float x_delta              = 1;
-    vector<float> coefficients = {1000, 7, -0.7, 0.007};
+    std::vector<float> coefficients = {1000, 7, -0.7, 0.007};
     LineExtractor::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
@@ -131,15 +131,15 @@ TEST(Regression, OneNonLinearFitWithNoise) {
     args, pcl, max_noise_x, max_noise_y);
 
     // Perform Regression
-    vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
+    std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
     clusters.push_back(pcl);
 
-    vector<VectorXf> lines =
+    std::vector<Eigen::VectorXf> lines =
     Regression::getLinesOfBestFit(clusters, polyDegree);
 
     // Check results
     ASSERT_EQ(lines.size(), 1);
-    VectorXf line = lines[0];
+    Eigen::VectorXf line = lines[0];
 
     ASSERT_EQ(line.size(), coefficients.size());
 

@@ -6,9 +6,9 @@
 
 #include <Regression.h>
 
-vector<VectorXf> Regression::getLinesOfBestFit(
-vector<PointCloud<PointXYZ>> clusters, unsigned int polyDegree, float lambda) {
-    vector<VectorXf> lines;
+std::vector<Eigen::VectorXf> Regression::getLinesOfBestFit(
+std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters, unsigned int polyDegree, float lambda) {
+    std::vector<Eigen::VectorXf> lines;
 
     // Calculate line of best fit for each cluster
     for (unsigned int i = 0; i < clusters.size(); i++) {
@@ -18,7 +18,7 @@ vector<PointCloud<PointXYZ>> clusters, unsigned int polyDegree, float lambda) {
     return lines;
 }
 
-VectorXf Regression::getLineOfCluster(PointCloud<PointXYZ> cluster,
+Eigen::VectorXf Regression::getLineOfCluster(pcl::PointCloud<pcl::PointXYZ> cluster,
                                       unsigned int polyDegree,
                                       float lambda) {
     unsigned int n = cluster.size();
@@ -45,32 +45,32 @@ VectorXf Regression::getLineOfCluster(PointCloud<PointXYZ> cluster,
      * Each row of the vector corresponds to the y coordinate of a point.
      */
 
-    MatrixXf X(n, polyDegree + 1);
-    VectorXf y(n);
+    Eigen::MatrixXf X(n, polyDegree + 1);
+    Eigen::VectorXf y(n);
 
     for (unsigned int i = 0; i < cluster.size(); i++) {
-        PointXYZ point = cluster[i];
+        pcl::PointXYZ point = cluster[i];
 
         X.row(i) = constructRow(point.x, polyDegree);
 
         y(i) = point.y;
     }
 
-    MatrixXf regularization(polyDegree + 1, polyDegree + 1);
+    Eigen::MatrixXf regularization(polyDegree + 1, polyDegree + 1);
     regularization.setIdentity();
     regularization *= lambda;
 
-    MatrixXf left(X.transpose() * X + regularization);
-    MatrixXf right(X.transpose() * y);
+    Eigen::MatrixXf left(X.transpose() * X + regularization);
+    Eigen::MatrixXf right(X.transpose() * y);
 
-    VectorXf line(n);
+    Eigen::VectorXf line(n);
     line = (left).ldlt().solve(right);
 
     return line;
 }
 
-VectorXf Regression::constructRow(float x, unsigned int polyDegree) {
-    VectorXf row(polyDegree + 1);
+Eigen::VectorXf Regression::constructRow(float x, unsigned int polyDegree) {
+    Eigen::VectorXf row(polyDegree + 1);
 
     // linear bias
     row(0) = 1;
