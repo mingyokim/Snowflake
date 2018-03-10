@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(line_extractor_igvc)
+project(sb_pointcloud_processing)
 
 add_compile_options(-std=c++14)
 

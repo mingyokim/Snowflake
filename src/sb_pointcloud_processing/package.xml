@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>line_extractor_igvc</name>
+  <name>sb_pointcloud_processing</name>
   <version>0.0.0</version>
-  <description>The line_extractor_igvc package</description>
+  <description>The point cloud processing package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <maintainer email="min@todo.todo">min</maintainer>
