@@ -7,19 +7,19 @@
 #include <Regression.h>
 
 std::vector<Eigen::VectorXf> Regression::getLinesOfBestFit(
-std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters, unsigned int polyDegree, float lambda) {
+std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters, unsigned int poly_degree, float lambda) {
     std::vector<Eigen::VectorXf> lines;
 
     // Calculate line of best fit for each cluster
     for (unsigned int i = 0; i < clusters.size(); i++) {
-        lines.push_back(getLineOfCluster(clusters[i], polyDegree, lambda));
+        lines.push_back(getLineOfCluster(clusters[i], poly_degree, lambda));
     }
 
     return lines;
 }
 
 Eigen::VectorXf Regression::getLineOfCluster(pcl::PointCloud<pcl::PointXYZ> cluster,
-                                      unsigned int polyDegree,
+                                      unsigned int poly_degree,
                                       float lambda) {
     unsigned int n = cluster.size();
 
@@ -45,18 +45,18 @@ Eigen::VectorXf Regression::getLineOfCluster(pcl::PointCloud<pcl::PointXYZ> clus
      * Each row of the vector corresponds to the y coordinate of a point.
      */
 
-    Eigen::MatrixXf X(n, polyDegree + 1);
+    Eigen::MatrixXf X(n, poly_degree + 1);
     Eigen::VectorXf y(n);
 
     for (unsigned int i = 0; i < cluster.size(); i++) {
         pcl::PointXYZ point = cluster[i];
 
-        X.row(i) = constructRow(point.x, polyDegree);
+        X.row(i) = constructRow(point.x, poly_degree);
 
         y(i) = point.y;
     }
 
-    Eigen::MatrixXf regularization(polyDegree + 1, polyDegree + 1);
+    Eigen::MatrixXf regularization(poly_degree + 1, poly_degree + 1);
     regularization.setIdentity();
     regularization *= lambda;
 
@@ -69,14 +69,14 @@ Eigen::VectorXf Regression::getLineOfCluster(pcl::PointCloud<pcl::PointXYZ> clus
     return line;
 }
 
-Eigen::VectorXf Regression::constructRow(float x, unsigned int polyDegree) {
-    Eigen::VectorXf row(polyDegree + 1);
+Eigen::VectorXf Regression::constructRow(float x, unsigned int poly_degree) {
+    Eigen::VectorXf row(poly_degree + 1);
 
     // linear bias
     row(0) = 1;
 
     // non-linear
-    for (unsigned int j = 1; j < polyDegree + 1; j++) { row(j) = pow(x, j); }
+    for (unsigned int j = 1; j < poly_degree + 1; j++) { row(j) = pow(x, j); }
 
     return row;
 }

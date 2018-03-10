@@ -32,8 +32,8 @@ DBSCAN::findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr) {
             // create a new cluster, and assign current point to it
             pcl::PointCloud<pcl::PointXYZ> cluster =
             pcl::PointCloud<pcl::PointXYZ>();
-            pcl::PointXYZ currentPoint = this->_pcl[i];
-            cluster.push_back(currentPoint);
+            pcl::PointXYZ current_point = this->_pcl[i];
+            cluster.push_back(current_point);
             this->_clustered.insert({i, true});
 
             // expand the cluster, centering on current point
@@ -47,34 +47,34 @@ DBSCAN::findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr) {
     return this->_clusters;
 }
 
-bool DBSCAN::isCore(unsigned int centerIndex) {
+bool DBSCAN::isCore(unsigned int center_index) {
     unordered_map<unsigned int, vector<unsigned int>>::const_iterator it =
-    this->_neighbors.find(centerIndex);
+    this->_neighbors.find(center_index);
     return (it->second).size() >= this->_min_neighbors;
 }
 
-void DBSCAN::expand(unsigned int centerIndex,
+void DBSCAN::expand(unsigned int center_index,
                     pcl::PointCloud<pcl::PointXYZ>& cluster) {
-    this->_expanded.insert({centerIndex, true});
+    this->_expanded.insert({center_index, true});
 
-    vector<unsigned int> neighbors = this->_neighbors.find(centerIndex)->second;
+    vector<unsigned int> neighbors = this->_neighbors.find(center_index)->second;
 
     // iterate through all the neighbors of the point
     for (unsigned int i = 0; i < neighbors.size(); i++) {
-        unsigned int currentIndex  = neighbors[i];
-        pcl::PointXYZ currentPoint = this->_pcl[currentIndex];
+        unsigned int current_index  = neighbors[i];
+        pcl::PointXYZ current_point = this->_pcl[current_index];
 
         // add neighbor point to the cluster if it hasn't already been clustered
-        if (!isPointVisited(currentIndex)) {
-            cluster.push_back(currentPoint);
-            this->_clustered.insert({currentIndex, true});
+        if (!isPointVisited(current_index)) {
+            cluster.push_back(current_point);
+            this->_clustered.insert({current_index, true});
         }
 
         // expand on the neighbour point if it is a core and it hasn't been
         // expanded yet
-        if (!isPointExpanded(currentIndex) && isCore(currentIndex)) {
-            expand(currentIndex, cluster);
-            this->_expanded.insert({currentIndex, true});
+        if (!isPointExpanded(current_index) && isCore(current_index)) {
+            expand(current_index, cluster);
+            this->_expanded.insert({current_index, true});
         }
     }
 
@@ -84,14 +84,14 @@ void DBSCAN::expand(unsigned int centerIndex,
 void DBSCAN::findNeighbors() {
     for (unsigned int i = 0; i < this->_pcl.size(); i++) {
         vector<unsigned int> neighbors;
-        pcl::PointXYZ currentPoint = this->_pcl[i];
+        pcl::PointXYZ current_point = this->_pcl[i];
 
-        // for currentPoint, determine all neighbour points that are within
+        // for current_point, determine all neighbour points that are within
         // predetermined radius
         for (unsigned int j = 0; j < this->_pcl.size(); j++) {
             if (i == j) continue;
-            pcl::PointXYZ neighborPoint = this->_pcl[j];
-            if (dist(currentPoint, neighborPoint) <= this->_radius) {
+            pcl::PointXYZ neighbor_point = this->_pcl[j];
+            if (dist(current_point, neighbor_point) <= this->_radius) {
                 neighbors.push_back(j);
             }
         }
@@ -107,10 +107,10 @@ double DBSCAN::dist(pcl::PointXYZ p1, pcl::PointXYZ p2) {
     return sqrt(pow(dx, 2) + pow(dy, 2));
 }
 
-bool DBSCAN::isPointVisited(unsigned int pIndex) {
-    return this->_clustered.find(pIndex) != this->_clustered.end();
+bool DBSCAN::isPointVisited(unsigned int p_index) {
+    return this->_clustered.find(p_index) != this->_clustered.end();
 }
 
-bool DBSCAN::isPointExpanded(unsigned int pIndex) {
-    return this->_expanded.find(pIndex) != this->_expanded.end();
+bool DBSCAN::isPointExpanded(unsigned int p_index) {
+    return this->_expanded.find(p_index) != this->_expanded.end();
 }

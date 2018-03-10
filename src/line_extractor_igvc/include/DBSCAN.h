@@ -62,15 +62,15 @@ class DBSCAN {
      * PointClouds
      */
     vector<pcl::PointCloud<pcl::PointXYZ>>
-    findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pclPtr);
+    findClusters(pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr);
 
     void setMinNeighbours(int new_min_neighour);
     void setRadius(float new_radius);
 
   private:
     double dist(pcl::PointXYZ p1, pcl::PointXYZ p2);
-    bool isPointVisited(unsigned int pIndex);
-    bool isPointExpanded(unsigned int pIndex);
+    bool isPointVisited(unsigned int p_index);
+    bool isPointExpanded(unsigned int p_index);
 
     /*
      * Finds all the neighbours of each point in the PointCloud
@@ -85,7 +85,7 @@ class DBSCAN {
      * 2. Expand recursively around each neighbor that is a core point
      * (unless the neighbor has already been expanded)
      */
-    void expand(unsigned int centerPointIndex,
+    void expand(unsigned int center_point_index,
                 pcl::PointCloud<pcl::PointXYZ>& cluster);
 
     /*
@@ -94,7 +94,7 @@ class DBSCAN {
      * A core point is a point that has at least @_min_neighbors within
      * @_radius.
      */
-    bool isCore(unsigned int centerPointIndex);
+    bool isCore(unsigned int center_point_index);
 };
 
 #endif // PROJECT_DBSCAN_H
