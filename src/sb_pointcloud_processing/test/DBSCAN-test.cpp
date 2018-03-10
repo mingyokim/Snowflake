@@ -33,10 +33,6 @@ TEST(DBSCAN, ClusterTwoNearPoints) {
     ASSERT_EQ(1, clusters.size());
     ASSERT_EQ(2, clusters[0].size());
 
-    for (int i = 0; i < clusters[0].size(); i++) {
-        std::cout << clusters[0][i].x << std::endl;
-    }
-
     EXPECT_EQ(1, clusters[0][0].x);
     EXPECT_FLOAT_EQ(1.1, clusters[0][1].x);
 }
