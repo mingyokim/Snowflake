@@ -34,7 +34,7 @@ class Regression {
 
   private:
     /*
-     * Returns a line of best given a cluster
+     * Returns a line of best fit given a cluster
      */
     static VectorXf getLineOfCluster(PointCloud<PointXYZ> cluster,
                                      unsigned int polyDegree,
