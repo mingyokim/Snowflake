@@ -99,14 +99,14 @@ class LineExtractorNode {
      * Convert a vector to LineObstacle message
      */
     mapping_igvc::LineObstacle vectorToLineObstacle(Eigen::VectorXf vector,
-                                                    unsigned int clusterIndex);
+                                                    unsigned int cluster_index);
 
     /*
      * Get the minimum and maximum value of x value of all points in a cluster
-     * @clusterIndex: the index of cluster of interest in @clusters
+     * @cluster_index: the index of cluster of interest in @clusters
      */
     void
-    getClusterXRange(double& xmin, double& xmax, unsigned int clusterIndex);
+    getClusterXRange(double& xmin, double& xmax, unsigned int cluster_index);
 
     /*
      * Checks whether or not all the params we are getting from NodeHandler are

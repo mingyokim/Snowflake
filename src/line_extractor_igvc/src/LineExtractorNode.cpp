@@ -79,11 +79,11 @@ void LineExtractorNode::extractLines() {
     std::vector<Eigen::VectorXf> lines =
     regression.getLinesOfBestFit(this->clusters, this->degreePoly);
 
-    std::vector<mapping_igvc::LineObstacle> lineObstacles =
+    std::vector<mapping_igvc::LineObstacle> line_obstacles =
     vectorsToMsgs(lines);
 
-    for (unsigned int i = 0; i < lineObstacles.size(); i++) {
-        publisher.publish(lineObstacles[i]);
+    for (unsigned int i = 0; i < line_obstacles.size(); i++) {
+        publisher.publish(line_obstacles[i]);
     }
 
     return;
@@ -107,22 +107,22 @@ LineExtractorNode::vectorsToMsgs(std::vector<Eigen::VectorXf> vectors) {
 
 mapping_igvc::LineObstacle
 LineExtractorNode::vectorToLineObstacle(Eigen::VectorXf v,
-                                        unsigned int clusterIndex) {
-    mapping_igvc::LineObstacle lineObstacle = mapping_igvc::LineObstacle();
+                                        unsigned int cluster_index) {
+    mapping_igvc::LineObstacle line_obstacle = mapping_igvc::LineObstacle();
 
     for (unsigned int i = 0; i < v.size(); i++) {
-        lineObstacle.coefficients.push_back(v(i));
+        line_obstacle.coefficients.push_back(v(i));
     }
 
-    getClusterXRange(lineObstacle.x_min, lineObstacle.x_max, clusterIndex);
+    getClusterXRange(line_obstacle.x_min, line_obstacle.x_max, cluster_index);
 
-    return lineObstacle;
+    return line_obstacle;
 }
 
 void LineExtractorNode::getClusterXRange(double& xmin,
                                          double& xmax,
-                                         unsigned int clusterIndex) {
-    pcl::PointCloud<pcl::PointXYZ> cluster = this->clusters[clusterIndex];
+                                         unsigned int cluster_index) {
+    pcl::PointCloud<pcl::PointXYZ> cluster = this->clusters[cluster_index];
 
     double min, max;
 
