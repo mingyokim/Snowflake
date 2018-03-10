@@ -57,7 +57,8 @@ void DBSCAN::expand(unsigned int center_index,
                     pcl::PointCloud<pcl::PointXYZ>& cluster) {
     this->_expanded.insert({center_index, true});
 
-    vector<unsigned int> neighbors = this->_neighbors.find(center_index)->second;
+    vector<unsigned int> neighbors =
+    this->_neighbors.find(center_index)->second;
 
     // iterate through all the neighbors of the point
     for (unsigned int i = 0; i < neighbors.size(); i++) {

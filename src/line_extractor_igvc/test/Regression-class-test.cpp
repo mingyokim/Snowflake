@@ -12,9 +12,9 @@ TEST(Regression, OnePerfectLinearFit) {
     // Setup PointCloud parameters
     unsigned int poly_degree = 1;
 
-    float x_min                = 0;
-    float x_max                = 99;
-    float x_delta              = 1;
+    float x_min                     = 0;
+    float x_max                     = 99;
+    float x_delta                   = 1;
     std::vector<float> coefficients = {100, 1};
     LineExtractor::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
@@ -43,9 +43,9 @@ TEST(Regression, MultiplePerfectLinearFits) {
     // Setup PointCloud parameters
     unsigned int poly_degree = 1;
 
-    float x_min                                 = 0;
-    float x_max                                 = 999;
-    float x_delta                               = 0.1;
+    float x_min                                           = 0;
+    float x_max                                           = 999;
+    float x_delta                                         = 0.1;
     std::vector<std::vector<float>> coefficients_per_line = {
     {5, -2}, {10, 7}, {-99, -10}};
 
@@ -82,9 +82,9 @@ TEST(Regression, OnePerfectNonLinearFit) {
     // Setup PointCloud paramters
     unsigned int poly_degree = 3;
 
-    float x_min                = 0;
-    float x_max                = 99;
-    float x_delta              = 1;
+    float x_min                     = 0;
+    float x_max                     = 99;
+    float x_delta                   = 1;
     std::vector<float> coefficients = {100, 7, -0.7, 0.007};
     LineExtractor::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
@@ -115,9 +115,9 @@ TEST(Regression, OneNonLinearFitWithNoise) {
     // Setup PointCloud parameters
     unsigned int poly_degree = 3;
 
-    float x_min                = 0;
-    float x_max                = 99;
-    float x_delta              = 1;
+    float x_min                     = 0;
+    float x_max                     = 99;
+    float x_delta                   = 1;
     std::vector<float> coefficients = {1000, 7, -0.7, 0.007};
     LineExtractor::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);

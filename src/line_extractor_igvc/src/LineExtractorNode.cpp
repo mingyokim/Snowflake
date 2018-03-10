@@ -36,7 +36,9 @@ LineExtractorNode::LineExtractorNode(int argc,
     SB_getParam(private_nh, radius_param, this->radius, default_radius);
 
     if (areParamsInvalid()) {
-        ROS_DEBUG("At least one of your parameters are negative; they should be positive!");
+        ROS_DEBUG(
+        "At least one of your parameters are negative; they should be "
+        "positive!");
         ros::shutdown();
     }
 

@@ -7,7 +7,9 @@
 #include <Regression.h>
 
 std::vector<Eigen::VectorXf> Regression::getLinesOfBestFit(
-std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters, unsigned int poly_degree, float lambda) {
+std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters,
+unsigned int poly_degree,
+float lambda) {
     std::vector<Eigen::VectorXf> lines;
 
     // Calculate line of best fit for each cluster
@@ -18,9 +20,10 @@ std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters, unsigned int poly_degree, 
     return lines;
 }
 
-Eigen::VectorXf Regression::getLineOfCluster(pcl::PointCloud<pcl::PointXYZ> cluster,
-                                      unsigned int poly_degree,
-                                      float lambda) {
+Eigen::VectorXf
+Regression::getLineOfCluster(pcl::PointCloud<pcl::PointXYZ> cluster,
+                             unsigned int poly_degree,
+                             float lambda) {
     unsigned int n = cluster.size();
 
     /*

@@ -12,9 +12,9 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
-//using namespace Eigen;
-//using namespace std;
-//using namespace pcl;
+// using namespace Eigen;
+// using namespace std;
+// using namespace pcl;
 
 class Regression {
   public:
@@ -36,9 +36,10 @@ class Regression {
     /*
      * Returns a line of best fit given a cluster
      */
-    static Eigen::VectorXf getLineOfCluster(pcl::PointCloud<pcl::PointXYZ> cluster,
-                                     unsigned int poly_degree,
-                                     float lambda = 0);
+    static Eigen::VectorXf
+    getLineOfCluster(pcl::PointCloud<pcl::PointXYZ> cluster,
+                     unsigned int poly_degree,
+                     float lambda = 0);
 
     /*
      * Constructs a row in the matrix X given a data point and degree of
