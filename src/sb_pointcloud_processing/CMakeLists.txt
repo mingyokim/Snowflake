@@ -44,15 +44,27 @@ add_executable(line_extractor_node
   include/Regression.h
   )
 
+add_executable(test_pcl_generator_node
+  src/test_pcl_generator_node.cpp
+  test/TestUtils.h
+  )
+
 ## Specify libraries to link a library or executable target against
- target_link_libraries(line_extractor_node
-   ${catkin_LIBRARIES}
-   ${sb_utils_LIBRARIES}
-   ${mapping_igvc_LIBRARIES}
-   ${PCL_COMMON_LIBRARIES}
-   ${PCL_IO_LIBRARIES}
-   ${pcl_conversions_LIBRARIES}
-   )
+target_link_libraries(line_extractor_node
+  ${catkin_LIBRARIES}
+  ${sb_utils_LIBRARIES}
+  ${mapping_igvc_LIBRARIES}
+  ${PCL_COMMON_LIBRARIES}
+  ${PCL_IO_LIBRARIES}
+  ${pcl_conversions_LIBRARIES}
+  )
+
+target_link_libraries(test_pcl_generator_node
+  ${catkin_LIBRARIES}
+  ${PCL_COMMON_LIBRARIES}
+  ${PCL_IO_LIBRARIES}
+  ${pcl_conversions_LIBRARIES}
+  )
 
 #############
 ## Testing ##
