@@ -61,12 +61,14 @@ add_executable(line_extractor_node
   include/LineExtractorNode.h
   include/DBSCAN.h
   include/Regression.h
+  include/Grid.h
+  include/PointCloudUtils.h
+  include/Regression.h
   src/line_extractor_node.cpp
   src/LineExtractorNode.cpp
   src/DBSCAN.cpp
   src/Regression.cpp
-  include/Regression.h
-)
+  src/Grid.cpp)
 
 add_executable(igvc_visualizer 
   src/igvc_visualizer.cpp 

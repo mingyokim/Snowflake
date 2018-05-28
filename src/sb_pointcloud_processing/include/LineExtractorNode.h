@@ -21,6 +21,7 @@
 #include <sb_utils.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <string>
+#include <PointCloudUtils.h>
 
 class LineExtractorNode {
   public:

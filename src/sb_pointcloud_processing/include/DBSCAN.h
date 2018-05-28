@@ -11,6 +11,7 @@
 #include <pcl/conversions.h>
 #include <pcl/point_types.h>
 #include <tr1/unordered_map>
+#include <Grid.h>
 
 using namespace std;
 using namespace std::tr1;

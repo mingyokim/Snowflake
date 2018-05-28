@@ -103,16 +103,16 @@ int main(int argc, char** argv) {
 
 sensor_msgs::PointCloud2 generatePclMessage(bool include_outlier) {
     // coefficients is the same as the one in LineObstacle message
-    LineExtractor::TestUtils::LineArgs args(first_line, x_min, x_max, x_delta);
+    LineExtractorTest::TestUtils::LineArgs args(first_line, x_min, x_max, x_delta);
 
     // Generate a single PointCloud with noise
     pcl::PointCloud<pcl::PointXYZ> pcl;
-    LineExtractor::TestUtils::addLineToPointCloud(
+    LineExtractorTest::TestUtils::addLineToPointCloud(
     args, pcl, max_noise_x, max_noise_y, getSeed());
 
     // Add second line to the pointcloud
     args.coefficients = second_line;
-    LineExtractor::TestUtils::addLineToPointCloud(
+    LineExtractorTest::TestUtils::addLineToPointCloud(
     args, pcl, max_noise_x, max_noise_y, getSeed());
 
     // Add outlier if wanted
@@ -120,7 +120,7 @@ sensor_msgs::PointCloud2 generatePclMessage(bool include_outlier) {
         args.coefficients = outlier_line;
         args.x_delta      = outlier_x_delta;
 
-        LineExtractor::TestUtils::addLineToPointCloud(
+        LineExtractorTest::TestUtils::addLineToPointCloud(
         args, pcl, max_noise_x, max_noise_y, getSeed());
     }
 

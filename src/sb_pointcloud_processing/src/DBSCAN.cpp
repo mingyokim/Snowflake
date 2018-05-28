@@ -10,6 +10,8 @@ DBSCAN::DBSCAN(int min_neighbours, float radius) {
     this->_min_neighbors = min_neighbours;
     this->_radius        = radius;
     this->_clusters      = vector<pcl::PointCloud<pcl::PointXYZ>>();
+
+    LineExtractor::Grid(pcl::PointCloud<pcl::PointXYZ>(), 0);
 }
 
 void DBSCAN::setMinNeighbours(int new_min_neighour) {

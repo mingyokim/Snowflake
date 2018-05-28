@@ -55,7 +55,7 @@ TEST_F(LineExtractorRosTest, TestTwoNonLinearLinesWithNoise) {
 
     // coefficients is the same as the one in LineObstacle message
     std::vector<float> coefficients = {1000, 7, -0.7, 0.007};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     float max_noise_x = 1;
@@ -63,7 +63,7 @@ TEST_F(LineExtractorRosTest, TestTwoNonLinearLinesWithNoise) {
 
     // Generate a single PointCloud with noise
     pcl::PointCloud<pcl::PointXYZ> pcl;
-    LineExtractor::TestUtils::addLineToPointCloud(
+    LineExtractorTest::TestUtils::addLineToPointCloud(
     args, pcl, max_noise_x, max_noise_y);
 
     sensor_msgs::PointCloud2 msg;
@@ -99,7 +99,7 @@ TEST_F(LineExtractorRosTest, TestTwoNonLinearLinesWithNoise) {
     EXPECT_NEAR(lineObstacle.x_max, x_max, 1);
 
     float true_min, true_max;
-    LineExtractor::TestUtils::getMinAndMaxOfPointCloud(true_min, true_max, pcl);
+    LineExtractorTest::TestUtils::getMinAndMaxOfPointCloud(true_min, true_max, pcl);
 
     EXPECT_FLOAT_EQ(lineObstacle.x_min, true_min);
     EXPECT_FLOAT_EQ(lineObstacle.x_max, true_max);

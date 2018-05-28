@@ -16,12 +16,12 @@ TEST(Regression, OnePerfectLinearFit) {
     float x_max                     = 99;
     float x_delta                   = 1;
     std::vector<float> coefficients = {100, 1};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Generate a single PointCloud
     pcl::PointCloud<pcl::PointXYZ> pcl;
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     // Perform Regression
     std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
@@ -55,10 +55,10 @@ TEST(Regression, MultiplePerfectLinearFits) {
     std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
 
     for (unsigned int i = 0; i < num_lines; i++) {
-        LineExtractor::TestUtils::LineArgs args(
+        LineExtractorTest::TestUtils::LineArgs args(
         coefficients_per_line[i], x_min, x_max, x_delta);
         pcl::PointCloud<pcl::PointXYZ> pcl;
-        LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+        LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
         clusters.push_back(pcl);
     }
@@ -86,12 +86,12 @@ TEST(Regression, OnePerfectNonLinearFit) {
     float x_max                     = 99;
     float x_delta                   = 1;
     std::vector<float> coefficients = {100, 7, -0.7, 0.007};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Generate PointCloud
     pcl::PointCloud<pcl::PointXYZ> pcl;
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     // Perform Regression
     std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters;
@@ -119,7 +119,7 @@ TEST(Regression, OneNonLinearFitWithNoise) {
     float x_max                     = 99;
     float x_delta                   = 0.01;
     std::vector<float> coefficients = {1000, 7, -0.7, 0.007};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     float max_noise_x = 1;
@@ -127,7 +127,7 @@ TEST(Regression, OneNonLinearFitWithNoise) {
 
     // Generate a single PointCloud with noise
     pcl::PointCloud<pcl::PointXYZ> pcl;
-    LineExtractor::TestUtils::addLineToPointCloud(
+    LineExtractorTest::TestUtils::addLineToPointCloud(
     args, pcl, max_noise_x, max_noise_y);
 
     // Perform Regression

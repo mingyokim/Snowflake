@@ -241,7 +241,10 @@ LineExtractorNode::vectorToLineObstacle(Eigen::VectorXf v,
         line_obstacle.coefficients.push_back(v(i));
     }
 
-    getClusterXRange(line_obstacle.x_min, line_obstacle.x_max, cluster_index);
+//    getClusterXRange(line_obstacle.x_min, line_obstacle.x_max, cluster_index);
+    PointCloudUtils::Range range = PointCloudUtils::getRangeOfPcl(this->clusters[cluster_index]);
+    line_obstacle.x_min = range.x_min;
+    line_obstacle.x_max = range.x_max;
 
     return line_obstacle;
 }

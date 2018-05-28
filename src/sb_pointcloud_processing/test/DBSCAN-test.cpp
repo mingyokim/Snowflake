@@ -100,15 +100,15 @@ TEST(DBSCAN, TestClusterTwoShortHorizontalLines) {
     float x_max                = 3;
     float x_delta              = 1;
     vector<float> coefficients = {10};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Add first line to PointCloud
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     // Add second line to PointCloud
     args.coefficients = {-10};
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
@@ -130,23 +130,23 @@ TEST(DBSCAN, TestClusterTwoSlopedLines) {
     float x_max                = 99;
     float x_delta              = 1;
     vector<float> coefficients = {100, 1};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Add first line to PointCloud
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     // Add second line to PointCloud
     args.coefficients = {-100, 1};
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
     dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[0].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[1].size());
 }
 
 TEST(DBSCAN, TestClusterTwoSlopedLinesWithOutliers) {
@@ -160,15 +160,15 @@ TEST(DBSCAN, TestClusterTwoSlopedLinesWithOutliers) {
     float x_max                = 99;
     float x_delta              = 1;
     vector<float> coefficients = {100, 1};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Add first line to PointCloud
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     // Add second line to PointCloud
     args.coefficients = {-100, 1};
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     //    outliers
     pcl.push_back(pcl::PointXYZ(999999, 999999, 0));
@@ -179,8 +179,8 @@ TEST(DBSCAN, TestClusterTwoSlopedLinesWithOutliers) {
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
     dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[0].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[1].size());
 }
 
 TEST(DBSCAN, TestClusterTwoLongHorizontalLines) {
@@ -194,23 +194,23 @@ TEST(DBSCAN, TestClusterTwoLongHorizontalLines) {
     float x_max                = 9989;
     float x_delta              = 1;
     vector<float> coefficients = {3};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Add first line to PointCloud
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     // Add second line to PointCloud
     args.coefficients = {-3};
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     std::vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
     dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[0].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[1].size());
 }
 
 TEST(DBSCAN, TestClusterBorder) {
@@ -224,23 +224,23 @@ TEST(DBSCAN, TestClusterBorder) {
     float x_max                = -8;
     float x_delta              = 1;
     vector<float> coefficients = {3.000001};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Add first line to PointCloud
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     // Add second line to PointCloud
     args.coefficients = {-3};
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
     dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[0].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[1].size());
 }
 
 TEST(DBSCAN, TestClusterTwoPolynomialLines) {
@@ -254,23 +254,23 @@ TEST(DBSCAN, TestClusterTwoPolynomialLines) {
     float x_max                = 19;
     float x_delta              = 1;
     vector<float> coefficients = {10, 0, 0, 0.002};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Add first line to PointCloud
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     // Add second line to PointCloud
     args.coefficients = {-10, 0, 0, 0.002};
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
     dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[0].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[1].size());
 }
 
 TEST(DBSCAN, TestClusterOnePolynomialLinesWithNoise) {
@@ -284,14 +284,14 @@ TEST(DBSCAN, TestClusterOnePolynomialLinesWithNoise) {
     float x_max                = 99;
     float x_delta              = 1;
     vector<float> coefficients = {1000, 7, -0.7, 0.007};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Add first line to PointCloud
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     float true_min, true_max;
-    LineExtractor::TestUtils::getMinAndMaxOfPointCloud(true_min, true_max, pcl);
+    LineExtractorTest::TestUtils::getMinAndMaxOfPointCloud(true_min, true_max, pcl);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
@@ -301,10 +301,10 @@ TEST(DBSCAN, TestClusterOnePolynomialLinesWithNoise) {
     ASSERT_EQ(clusters.size(), 1);
 
     float actual_min, actual_max;
-    LineExtractor::TestUtils::getMinAndMaxOfPointCloud(
+    LineExtractorTest::TestUtils::getMinAndMaxOfPointCloud(
     actual_min, actual_max, clusters[0]);
 
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[0].size());
     EXPECT_FLOAT_EQ(true_min, actual_min);
     EXPECT_FLOAT_EQ(true_max, actual_max);
 }
@@ -320,23 +320,23 @@ TEST(DBSCAN, TestClusterTwoPolynomialLinesWithNoise) {
     float x_max                = 99;
     float x_delta              = 1;
     vector<float> coefficients = {1000, 7, -0.7, 0.007};
-    LineExtractor::TestUtils::LineArgs args(
+    LineExtractorTest::TestUtils::LineArgs args(
     coefficients, x_min, x_max, x_delta);
 
     // Add first line to PointCloud
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     // Add second line to PointCloud
     args.coefficients = {-1000, 7, -0.7, 0.007};
-    LineExtractor::TestUtils::addLineToPointCloud(args, pcl);
+    LineExtractorTest::TestUtils::addLineToPointCloud(args, pcl);
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr = pcl.makeShared();
 
     vector<pcl::PointCloud<pcl::PointXYZ>> clusters =
     dbscan.findClusters(pcl_ptr);
     ASSERT_EQ(2, clusters.size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[0].size());
-    EXPECT_EQ(LineExtractor::TestUtils::getNumPoints(args), clusters[1].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[0].size());
+    EXPECT_EQ(LineExtractorTest::TestUtils::getNumPoints(args), clusters[1].size());
 }
 
 int main(int argc, char** argv) {

@@ -11,7 +11,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
-namespace LineExtractor {
+namespace LineExtractorTest {
 class TestUtils {
   public:
     /**
