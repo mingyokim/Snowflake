@@ -22,6 +22,7 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <string>
 #include <PointCloudUtils.h>
+#include <Grid.h>
 
 class LineExtractorNode {
   public:
@@ -154,12 +155,12 @@ class LineExtractorNode {
     mapping_igvc::LineObstacle vectorToLineObstacle(Eigen::VectorXf vector,
                                                     unsigned int cluster_index);
 
-    /*
-     * Get the minimum and maximum value of x value of all points in a cluster
-     * @cluster_index: the index of cluster of interest in @clusters
-     */
-    void
-    getClusterXRange(double& xmin, double& xmax, unsigned int cluster_index);
+//    /*
+//     * Get the minimum and maximum value of x value of all points in a cluster
+//     * @cluster_index: the index of cluster of interest in @clusters
+//     */
+//    void
+//    getClusterXRange(double& xmin, double& xmax, unsigned int cluster_index);
 
     /*
      * Checks whether or not all the params we are getting from NodeHandler are

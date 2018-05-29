@@ -96,6 +96,8 @@ const sensor_msgs::PointCloud2ConstPtr processed_pcl) {
 }
 
 void LineExtractorNode::extractLines() {
+    LineExtractor::Grid(this->pclPtr, this->radius, PointCloudUtils::getXYRangeOfPcl(this->pclPtr));
+
     DBSCAN dbscan(this->minNeighbours, this->radius);
     this->clusters = dbscan.findClusters(this->pclPtr);
 
@@ -242,32 +244,32 @@ LineExtractorNode::vectorToLineObstacle(Eigen::VectorXf v,
     }
 
 //    getClusterXRange(line_obstacle.x_min, line_obstacle.x_max, cluster_index);
-    PointCloudUtils::Range range = PointCloudUtils::getRangeOfPcl(this->clusters[cluster_index]);
-    line_obstacle.x_min = range.x_min;
-    line_obstacle.x_max = range.x_max;
+    PointCloudUtils::Range x_range = PointCloudUtils::getXRangeOfPcl((pcl::PointCloud<pcl::PointXYZ>::Ptr) &this->clusters[cluster_index]);
+    line_obstacle.x_min = x_range.min;
+    line_obstacle.x_max = x_range.min;
 
     return line_obstacle;
 }
 
-void LineExtractorNode::getClusterXRange(double& xmin,
-                                         double& xmax,
-                                         unsigned int cluster_index) {
-    pcl::PointCloud<pcl::PointXYZ> cluster = this->clusters[cluster_index];
-
-    double min, max;
-
-    if (cluster.size()) {
-        min = max = cluster[0].x;
-    } else {
-        xmin = xmax = -1;
-        return;
-    }
-
-    for (unsigned int i = 0; i < cluster.size(); i++) {
-        if (cluster[i].x < min) { min = cluster[i].x; }
-        if (cluster[i].x > max) { max = cluster[i].x; }
-    }
-
-    xmin = min;
-    xmax = max;
-}
+//void LineExtractorNode::getClusterXRange(double& xmin,
+//                                         double& xmax,
+//                                         unsigned int cluster_index) {
+//    pcl::PointCloud<pcl::PointXYZ> cluster = this->clusters[cluster_index];
+//
+//    double min, max;
+//
+//    if (cluster.size()) {
+//        min = max = cluster[0].x;
+//    } else {
+//        xmin = xmax = -1;
+//        return;
+//    }
+//
+//    for (unsigned int i = 0; i < cluster.size(); i++) {
+//        if (cluster[i].x < min) { min = cluster[i].x; }
+//        if (cluster[i].x > max) { max = cluster[i].x; }
+//    }
+//
+//    xmin = min;
+//    xmax = max;
+//}

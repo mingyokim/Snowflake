@@ -11,31 +11,50 @@
 class PointCloudUtils {
 public:
     struct Range {
-        double x_min;
-        double x_max;
-
-        double y_min;
-        double y_max;
+        double min, max;
+    } XRange, YRange;
+    struct XYRange {
+        Range x, y;
     };
 
-    static Range getRangeOfPcl(pcl::PointCloud<pcl::PointXYZ> pcl) {
-        Range range;
+    static XYRange getXYRangeOfPcl(pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr) {
+        XYRange range;
+        range.x = getXRangeOfPcl(pcl_ptr);
+        range.y = getYRangeOfPcl(pcl_ptr);
+        return range;
+    }
+
+    static Range getXRangeOfPcl(pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr) {
+        pcl::PointCloud<pcl::PointXYZ> pcl = *pcl_ptr;
+        Range x_range;
 
         if (pcl.size()) {
-            range.x_min = range.x_max = pcl[0].x;
-            range.y_min = range.y_max = pcl[0].y;
+            x_range.min = x_range.max = pcl[0].x;
         } else {
-            range.x_min = range.x_max = -1;
-            range.y_min = range.y_max = -1;
-            return range;
+            x_range.min = x_range.max = -1;
+            return x_range;
         }
 
         for (unsigned int i = 0; i < pcl.size(); i++) {
-            if (pcl[i].x < range.x_min) { range.x_min = pcl[i].x; }
-            if (pcl[i].x > range.x_max) { range.x_max = pcl[i].x; }
+            if (pcl[i].x < x_range.min) { x_range.min = pcl[i].x; }
+            if (pcl[i].x > x_range.max) { x_range.max = pcl[i].x; }
+        }
+    }
 
-            if (pcl[i].y < range.y_min) { range.y_min = pcl[i].y; }
-            if (pcl[i].y > range.y_max) { range.y_max = pcl[i].y; }
+    static Range getYRangeOfPcl(pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr) {
+        pcl::PointCloud<pcl::PointXYZ> pcl = *pcl_ptr;
+        Range y_range;
+
+        if (pcl.size()) {
+            y_range.min = y_range.max = pcl[0].y;
+        } else {
+            y_range.min = y_range.max = -1;
+            return y_range;
+        }
+
+        for (unsigned int i = 0; i < pcl.size(); i++) {
+            if (pcl[i].y < y_range.min) { y_range.min = pcl[i].y; }
+            if (pcl[i].y > y_range.max) { y_range.max = pcl[i].y; }
         }
     }
 };
