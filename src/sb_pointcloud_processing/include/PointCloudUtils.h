@@ -12,7 +12,8 @@ class PointCloudUtils {
 public:
     struct Range {
         double min, max;
-    } XRange, YRange;
+    };
+
     struct XYRange {
         Range x, y;
     };
@@ -39,6 +40,8 @@ public:
             if (pcl[i].x < x_range.min) { x_range.min = pcl[i].x; }
             if (pcl[i].x > x_range.max) { x_range.max = pcl[i].x; }
         }
+
+        return x_range;
     }
 
     static Range getYRangeOfPcl(pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr) {
@@ -56,6 +59,8 @@ public:
             if (pcl[i].y < y_range.min) { y_range.min = pcl[i].y; }
             if (pcl[i].y > y_range.max) { y_range.max = pcl[i].y; }
         }
+
+        return y_range;
     }
 };
 
