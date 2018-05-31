@@ -20,6 +20,7 @@ namespace LineExtractor {
 
     private:
         PointCloudUtils::XYRange _xy_range;
+        float _radius;
 
         int _rows;
         int _cols;
@@ -28,9 +29,9 @@ namespace LineExtractor {
 
         std::vector<std::vector<Cell>> _grid;
 
-        void populateGrid(pcl::PointCloud<pcl::PointXYZ> pcl);
-        void addPointToCell(pcl::PointXYZ point);
-        Cell getCellOfPoint(pcl::PointXYZ point);
+        void populateGrid(pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_ptr);
+        void addPointToACell(pcl::PointXYZ point);
+        Cell* getCellOfPoint(pcl::PointXYZ point);
         int getCellRowOfPoint(pcl::PointXYZ point);
         int getCellColOfPoint(pcl::PointXYZ point);
 
